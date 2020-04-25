@@ -20,7 +20,6 @@ public:
 		YELLOW_TEXT = 3,
 	};
 
-	bool LoadFromFile(std::string path);
 	bool LoadFromRenderText(TTF_Font* font, SDL_Renderer* screen);
 	void Free();
 

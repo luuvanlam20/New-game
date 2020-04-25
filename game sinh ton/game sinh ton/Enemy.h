@@ -47,12 +47,9 @@ public:
 
 	std::vector<Bullet*> get_bullet_list()const { return bullet_list_; }
 	void set_bullet_list(const std::vector<Bullet*> bl_list) { bullet_list_ = bl_list; }
-	//std::vector<Bullet*> get_movebullet_list()const { return move_bullet_list; }
-	//void set_movebullet_list(const std::vector<Bullet*> bl_list) { move_bullet_list = bl_list; }
 	void InitBullet(Bullet* p_bullet, SDL_Renderer* screen);
 	void MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit,map& map_data);
 	void RemoveBullet(const int& id);
-	//void InitBulletMove(Bullet* p_bullet, SDL_Renderer* screen);
 	
 
 private:
@@ -75,7 +72,6 @@ private:
 	input input_type;
 
 	std::vector<Bullet*> bullet_list_;
-	std::vector<Bullet*> move_bullet_list;
 
 };
 

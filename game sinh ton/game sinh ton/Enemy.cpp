@@ -131,16 +131,7 @@ void Enemy::doEnemy(map& gMap)
 		{
 			x_val_ += tocdochay;
 		}
-		/*if (input_type.jump == 1)
-		{
-			if (on_groud == true)
-			{
-				y_val = -lucnhay;
-				on_groud = false;
-			}
-
-			input_type.jump = 0;
-		}*/
+		
 		vacham(gMap);
 	}
 	else
@@ -176,11 +167,9 @@ void Enemy::RemoveBullet(const int& id)
 		bullet_list_.erase(bullet_list_.begin() + id);
 		
 		if (p_bullet)
-		{
-			
+		{			
 			delete p_bullet;
-			p_bullet = NULL;
-			
+			p_bullet = NULL;			
 		}
 	}
 }
@@ -312,8 +301,7 @@ void Enemy::ImgMoveType(SDL_Renderer* screen)
 		{
 			if (x_pos_ > enemy_b)
 			{
-				input_type.left = 1;
-				
+				input_type.left = 1;				
 				input_type.right = 0;
 				LoadImg("hinh//threat_left.png", screen);
 			}
@@ -342,11 +330,12 @@ void Enemy::InitBullet(Bullet* p_bullet, SDL_Renderer* screen)
 	if (p_bullet != NULL)
 	{
 		p_bullet->set_bullet_type(Bullet::lazer_bullet);
-	
+
 		bool rec=p_bullet->loadImgBullet(screen);
 		if (rec)
 		{
 			p_bullet->set_is_move(true);
+
 			p_bullet->set_bullet_dir(Bullet::dir_left);
 			
 			p_bullet->SetRect(rect_.x + 10, y_pos_ + 10);
@@ -356,32 +345,6 @@ void Enemy::InitBullet(Bullet* p_bullet, SDL_Renderer* screen)
 	}
 }
 
-/*void Enemy::InitBulletMove(Bullet* p_bullet, SDL_Renderer* screen)
-{
-	if (p_bullet != NULL)
-	{
-		p_bullet->set_bullet_type(Bullet::bigger_bullet);
-		bool rec = p_bullet->loadImgBullet(screen);
-		if (rec)
-		{
-			if (input_type.left == 1)
-			{
-				p_bullet->set_bullet_dir(Bullet::dir_left);
-				p_bullet->SetRect(rect_.x + 15, y_pos_ + 15);
-
-			}
-			if (input_type.right == 1)
-			{
-				p_bullet->set_bullet_dir(Bullet::dir_right);
-				p_bullet->SetRect(rect_.x + width_pic - 20,rect_.y + (height_pic) * 0.25);
-			}
-			p_bullet->set_x_val(20);
-			p_bullet->set_is_move(true);
-
-			move_bullet_list.push_back(p_bullet);
-		}
-	}
-}*/
 
 void Enemy::MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit,map& map_data)
 {
@@ -407,7 +370,6 @@ void Enemy::MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_li
 			{
 				p_bullet->set_is_move(true);
 				p_bullet->SetRect(rect_.x + 10, y_pos_ + 10);
-				//mp_bullet->SetRect(rect_.x + 15, y_pos_ + 15);
 			}
 		}
 	}

@@ -13,3 +13,5 @@ Dùng phím mũi tên <- và -> để di chuyển và các phím mũi tên để
 Dùng chuột trái để bắn đạn, chuột phải để nhảy.
 
 Dùng phím 1 và 2 để đổi đạn.
+
+Chết hết mạng hoặc đi đến cuối map để hoàn thành trò chơi.

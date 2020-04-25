@@ -9,6 +9,7 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 #include <iostream>
+#include <string>
 
 
 
@@ -40,7 +41,7 @@ const int RENDER_DRAW_COLOR = 0xff;//mau trang
 #define MAPMAX_X 400//so mat xich theo X
 #define MAPMAX_Y 10//so mat xich theo Y
 
-typedef struct map
+struct map
 {
 	int stratX;
 	int stratY;
@@ -51,7 +52,7 @@ typedef struct map
 	const char* file_name;//ten duong dan
 };
 
-typedef struct input
+struct input
 {
 	int left;
 	int right;
@@ -67,6 +68,10 @@ namespace SDLCommonFuc
 	int ShowMenu(SDL_Renderer* screen, TTF_Font* font);
 
 	bool checkFocus(const int& x,const int& y,const SDL_Rect& rect);
+
+	int doHelp(SDL_Renderer* screen, TTF_Font* font);
+	int END(SDL_Renderer* screen, TTF_Font* font,const UINT & mar);
+	int IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar);
 
 }
 

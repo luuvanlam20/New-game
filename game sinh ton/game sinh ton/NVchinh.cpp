@@ -28,6 +28,7 @@ NVchinh::NVchinh()
 	money = 0;
 	lives_left = 3;
 	bullet_type = 1;
+	is_win = false;
 }
 NVchinh::~NVchinh()
 {
@@ -317,7 +318,7 @@ void NVchinh::HandleBullet(SDL_Renderer* des,map& map_data)
 		{
 			if (p_bullet->get_is_move() == true)
 			{
-				p_bullet->hand_Move(SCREEN_WIDTH, SCREEN_HEIGHT,map_data);
+				p_bullet->hand_Move(SCREEN_WIDTH, SCREEN_HEIGHT,map_data,map_x_,map_y_);
 				//p_bullet->vacham(map_data);
 				p_bullet->Render(des);
 			}
@@ -385,7 +386,7 @@ void NVchinh::dichuyen(map& map_data)
 		time_back--;
 		if (time_back == 0)
 		{
-			x_pos = 0;	
+			x_pos = x_pos-400;	
 			y_pos = 0;
 			x_val = 0;
 			y_val = 0;
@@ -546,6 +547,10 @@ void NVchinh::vacham(map& map_data)
 	else if (x_pos + width_pic > map_data.max_X)
 	{
 		x_pos = map_data.max_X - width_pic - 1;
+	}
+	if (x_pos >= map_data.max_X - 400)
+	{
+		is_win = true;
 	}
 	if (y_pos < 0)
 	{

@@ -32,12 +32,12 @@ bool Bullet::loadImgBullet(SDL_Renderer* des)
 	
 	return rec;
 }
-void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data)
+void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data, const int& map_x, const int& map_y)
 {
 	if (bullet_dir == dir_right)
 	{
-		rect_.x += x_val_;
-		//vacham(map_data);
+		//rect_.x += x_val_;
+		vacham(map_data,map_x,map_y);
 		if (rect_.x > x_bor)
 		{
 			is_move = false;
@@ -47,7 +47,8 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data)
 	}
 	else if (bullet_dir == dir_left)
 	{
-		rect_.x -= x_val_;
+		//rect_.x -= x_val_;
+		vacham(map_data, map_x, map_y);
 		if (rect_.x < 0)
 		{
 			is_move = false;
@@ -57,7 +58,8 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data)
 	}
 	else if (bullet_dir == dir_up)
 	{
-		rect_.y -= y_val_;
+		//rect_.y -= y_val_;
+		vacham(map_data, map_x, map_y);
 		if (rect_.y < 0)
 		{
 			is_move = false;
@@ -66,7 +68,8 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data)
 	}
 	else if (bullet_dir == dir_down)
 	{
-		rect_.y += y_val_;
+		//rect_.y += y_val_;
+		vacham(map_data, map_x, map_y);
 		if (rect_.y > y_bor)
 		{
 			is_move = false;
@@ -75,13 +78,14 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data)
 	}
 	else if (bullet_dir == dir_up_left)
 	{
-		rect_.x -= x_val_;
+		//rect_.x -= x_val_;
+		vacham(map_data, map_x, map_y);
 		if (rect_.x < 0)
 		{
 			is_move = false;
 		}
 
-		rect_.y -= y_val_;
+		//rect_.y -= y_val_;
 		if (rect_.y < 0)
 		{
 			is_move = false;
@@ -90,12 +94,13 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data)
 	}
 	else if (bullet_dir == dir_up_right)
 	{
-		rect_.x += x_val_;
+		//rect_.x += x_val_;
+		vacham(map_data, map_x, map_y);
 		if (rect_.x > x_bor)
 		{
 			is_move = false;
 		}
-		rect_.y -= y_val_;
+		//rect_.y -= y_val_;
 		if (rect_.y < 0)
 		{
 			is_move = false;
@@ -104,12 +109,13 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data)
 	}
 	else if (bullet_dir == dir_down_left)
 	{
-		rect_.x -= x_val_;
+		//rect_.x -= x_val_;
+		vacham(map_data, map_x, map_y);
 		if (rect_.x < 0)
 		{
 			is_move = false;
 		}
-		rect_.y += y_val_;
+		//rect_.y += y_val_;
 		if (rect_.y > y_bor)
 		{
 			is_move = false;
@@ -118,12 +124,13 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data)
 	}
 	else if (bullet_dir == dir_down_right)
 	{
-		rect_.x += x_val_;
+		//rect_.x += x_val_;
+		vacham(map_data, map_x, map_y);
 		if (rect_.x > x_bor)
 		{
 			is_move = false;
 		}
-		rect_.y += y_val_;
+		//rect_.y += y_val_;
 		if (rect_.y > y_bor)
 		{
 			is_move = false;
@@ -133,7 +140,7 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data)
 	//vacham(x_bor,y_bor, map_data);
 }
 
-void Bullet::vacham( map& map_data)
+void Bullet::vacham( map& map_data,const int& map_x,const int& map_y)
 {
 	int x1 = 0;
 	int x2 = 0;
@@ -163,11 +170,11 @@ void Bullet::vacham( map& map_data)
 	//kt chieu cao
 	int height_min = rect_.h < TILE_SIZE ? rect_.h : TILE_SIZE;
 
-	x1 = (rect_.x + m) / TILE_SIZE;
-	x2 = (rect_.x + m + rect_.w - 1) / TILE_SIZE;
+	x1 = (rect_.x + map_x + m) / TILE_SIZE;
+	x2 = (rect_.x + map_x + m + rect_.w - 1) / TILE_SIZE;
 
-	y1 = (rect_.y) / TILE_SIZE;
-	y2 = (rect_.y + height_min - 1) / TILE_SIZE;
+	y1 = (rect_.y+map_y) / TILE_SIZE;
+	y2 = (rect_.y+map_y + height_min - 1) / TILE_SIZE;
 
 	if (x1 >= 0 && x2 < MAPMAX_X && y1 >= 0 && y2 < MAPMAX_Y)
 	{
@@ -199,11 +206,11 @@ void Bullet::vacham( map& map_data)
 	}
 	int width_min = rect_.w < TILE_SIZE ? rect_.w : TILE_SIZE;
 
-	x1 = (rect_.x) / TILE_SIZE;
-	x2 = (rect_.x + width_min - 1) / TILE_SIZE;
+	x1 = (rect_.x + map_x) / TILE_SIZE;
+	x2 = (rect_.x + map_x + width_min - 1) / TILE_SIZE;
 
-	y1 = (rect_.y + n) / TILE_SIZE;
-	y2 = (rect_.y + n + rect_.h - 1) / TILE_SIZE;
+	y1 = (rect_.y + map_y + n) / TILE_SIZE;
+	y2 = (rect_.y + map_y + n + rect_.h - 1) / TILE_SIZE;
 
 	if (x1 >= 0 && x2 < MAPMAX_X && y1 >= 0 && y2 < MAPMAX_Y)
 	{

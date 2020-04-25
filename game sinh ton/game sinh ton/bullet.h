@@ -36,10 +36,10 @@ public:
 	int get_bullet_type()const { return bullet_type; }
 	void set_bullet_dir(const unsigned int& bulletDIR) { bullet_dir = bulletDIR; }
 	unsigned int get_bullet_dir()const { return bullet_dir; }
-	void hand_Move(const int& x_bor, const int& y_bor, map& map_data);
+	void hand_Move(const int& x_bor, const int& y_bor, map& map_data,const int& map_x, const int& map_y);
 	bool loadImgBullet(SDL_Renderer* des);
 
-	void vacham(map& map_data);
+	void vacham(map& map_data,const int& map_x,const int& map_y);
 
 private:
 	int x_val_;

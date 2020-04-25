@@ -5,6 +5,7 @@
 PlayerPower::PlayerPower()
 {
 	number_ = 0;
+	lives_left = 0;
 }
 PlayerPower::~PlayerPower()
 {

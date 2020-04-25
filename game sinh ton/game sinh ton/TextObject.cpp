@@ -7,6 +7,8 @@ TextObject::TextObject()
 	text_color_.r = 255;
 	text_color_.g = 255;
 	text_color_.b = 255;
+	height_ = 0;
+	width_ = 0;
 	texture_ = NULL;
 
 }
@@ -61,6 +63,11 @@ void TextObject::SetColor(int type)
 	else if (type == BLACK_TEXT)
 	{
 		SDL_Color color = { 0,0,0 };
+		text_color_ = color;
+	}
+	else if (type == YELLOW_TEXT)
+	{
+		SDL_Color color = { 255,255,0 };
 		text_color_ = color;
 	}
 }

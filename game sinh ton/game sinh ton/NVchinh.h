@@ -43,6 +43,7 @@ public:
 	int GetMoney()const { return money; }
 	void Lives_decre();
 	int Get_lives_left()const { return lives_left; }
+	bool WIN()const { return is_win; }
 
 private:
 	int money;
@@ -62,6 +63,7 @@ private:
 	int frame;
 	int status;
 	bool on_groud;
+	bool is_win;
 	int map_x_;
 	int map_y_;
 

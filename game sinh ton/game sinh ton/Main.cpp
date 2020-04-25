@@ -13,6 +13,7 @@
 Hamcoso g_background;
 
 TTF_Font* font_time=NULL;
+TTF_Font* menu_font = NULL;
 // tao windown
 bool InitData()
 {
@@ -41,6 +42,7 @@ bool InitData()
             success = false;
         }
         font_time = TTF_OpenFont("font//dlxfont_.ttf", 15);
+        menu_font = TTF_OpenFont("font//dlxfont_.ttf", 25);
         if (font_time == NULL)
         {
             success = false;
@@ -84,8 +86,8 @@ std::vector<Enemy*> MakeEnemyList()
 {
     std::vector<Enemy*> enemy_list;
 
-    Enemy* enemy_obj_move = new Enemy[20];
-    for (int i = 0; i < 20; i++)
+    Enemy* enemy_obj_move = new Enemy[40];
+    for (int i = 0; i < 40; i++)
     {
         Enemy* p_enemy = (enemy_obj_move + i);
         if (p_enemy != NULL)
@@ -93,7 +95,7 @@ std::vector<Enemy*> MakeEnemyList()
             p_enemy->LoadImg("hinh//threat_left.png", g_screen);
             p_enemy->set_clip();
             p_enemy->set_type_move(Enemy::move_in_space);
-            p_enemy->set_x_pos(500 + i * 500);
+            p_enemy->set_x_pos(500 + i * 700);
             p_enemy->set_y_pos(200);
 
             int pos1 = p_enemy->get_x_pos() - 60;
@@ -108,8 +110,8 @@ std::vector<Enemy*> MakeEnemyList()
         }
     }
 
-    Enemy* enemy_obj = new Enemy[20];
-    for (int i = 0; i < 20; i++)
+    Enemy* enemy_obj = new Enemy[40];
+    for (int i = 0; i < 40; i++)
     {
         Enemy* p_enemy = (enemy_obj + i);
         if (p_enemy != NULL)
@@ -140,16 +142,27 @@ int main(int argc, char* argv[])
     if (LoadBackGround() == false)
         return -1;
 
+    int ret_menu = SDLCommonFuc::ShowMenu(g_screen, menu_font);
 
-    int ret_menu = SDLCommonFuc::ShowMenu(g_screen, font_time);
     bool is_quit = false;
-    if (ret_menu == 1)
+    while (ret_menu == 1)
+    {
+        if (ret_menu == 1)
+        {
+            ret_menu = SDLCommonFuc::doHelp(g_screen, menu_font);
+
+        }
+    }
+    
+
+    if (ret_menu == 2)
     {
         is_quit = true;
 
         close();
         return 0;
     }
+    
 
     Mix_PlayChannel(-1, g_main_sound, 2);
     //map
@@ -202,11 +215,10 @@ int main(int argc, char* argv[])
 
     while (!is_quit)
     {
-        if (ret_menu == 0) 
+        if (ret_menu == 0)
         {
-            fps_times.start();
-        }
-        
+               fps_times.start();
+        }     
        //nhan vao khi nhap
         while (SDL_PollEvent(&g_event) != 0)
         {
@@ -265,12 +277,15 @@ int main(int argc, char* argv[])
                 SDL_Rect rect_player = player.GetRectFrame();
                 bool bCol1 = false;
                 std::vector<Bullet*> tbullet = p_enemy->get_bullet_list();
+                
                 for(int k = 0; k < tbullet.size(); k++)
                 {
                     Bullet* enemy_bullet = tbullet.at(k);
+                    
                     if (enemy_bullet)
                     {
                         bCol1 = SDLCommonFuc::checkColisision(enemy_bullet->GetRect(), rect_player);
+                       
                         if (bCol1)
                         {
                             p_enemy->RemoveBullet(k);
@@ -313,7 +328,8 @@ int main(int argc, char* argv[])
                     }
                     else
                     {
-                        if (MessageBox(NULL, L"Game Over!", L"Infor", MB_OK | MB_ICONSTOP) == IDOK)
+                        int end = SDLCommonFuc::END(g_screen,menu_font,mar_val);
+                        if (end==1)
                         {
                             player.Free();
                             close();
@@ -328,9 +344,9 @@ int main(int argc, char* argv[])
                 //player_power.Render(g_screen);
                 if (player.Get_lives_left() <= 0)
                 {
-                    if (MessageBox(NULL, L"Game Over!", L"Infor", MB_OK | MB_ICONSTOP) == IDOK)
+                    int end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
+                    if (end == 1)
                     {
-                    
                         player.Free();
                         close();
                         SDL_Quit();
@@ -370,7 +386,7 @@ int main(int argc, char* argv[])
 
                         if (bCol)
                         {
-                            mar_val++;
+                            mar_val+=10;
                             for (int ex = 0; ex < Num_EX_frame; ex++)
                             {
                                 int x_pos = p_bullet->GetRect().x-frame_exp_width*0.5;
@@ -396,14 +412,17 @@ int main(int argc, char* argv[])
 
         std::string str_time = "Time: ";
         Uint32 time_val_ = SDL_GetTicks() / 1000;
-        Uint32 val_time = 300 - time_val_;
+        Uint32 val_time = 600 - time_val_;
 
         if (val_time <= 0)
         {
-            if (MessageBox(NULL, L"Game Over!", L"Infor", MB_OK | MB_ICONSTOP) == IDOK)
+            int end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
+            if (end == 1)
             {
-                is_quit = true;
-                break;
+                player.Free();
+                close();
+                SDL_Quit();
+                return 0;
             }
         }
         else
@@ -430,6 +449,17 @@ int main(int argc, char* argv[])
         mark_game.LoadFromRenderText(font_time, g_screen);
         mark_game.RenderText(g_screen, 200, 15);
 
+        if (player.WIN() == true)
+        {
+            int win = SDLCommonFuc::IS_WIN(g_screen, menu_font, mar_val);
+            if (win == 1)
+            {
+                player.Free();
+                close();
+                SDL_Quit();
+                return 0;
+            }
+        }
 
         SDL_RenderPresent(g_screen);
         //delay
@@ -452,8 +482,15 @@ int main(int argc, char* argv[])
             p_enemy = NULL;
         }
     }
+    g_background.Free();
+    player.Free();
     enemy_list.clear();
-
+    mark_game.Free();
+    time_game.Free();
+    player_power.Free();
+    player_money.Free();
+    exp_enemy.Free();
+    exp_main.Free();
     close();
     return 0;
 }

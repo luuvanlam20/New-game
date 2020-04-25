@@ -19,6 +19,8 @@ Enemy::Enemy()
 
 	enemy_a = 0;
 	enemy_b = 0;
+	map_x = 0;
+	map_y = 0;
 	input_type.left = 0;
 	type_move = static_enemy;
 }
@@ -170,11 +172,15 @@ void Enemy::RemoveBullet(const int& id)
 	if (sizebullet > 0 && id < sizebullet)
 	{
 		Bullet* p_bullet = bullet_list_.at(id);
+		
 		bullet_list_.erase(bullet_list_.begin() + id);
+		
 		if (p_bullet)
 		{
+			
 			delete p_bullet;
-			p_bullet == NULL;
+			p_bullet = NULL;
+			
 		}
 	}
 }
@@ -307,6 +313,7 @@ void Enemy::ImgMoveType(SDL_Renderer* screen)
 			if (x_pos_ > enemy_b)
 			{
 				input_type.left = 1;
+				
 				input_type.right = 0;
 				LoadImg("hinh//threat_left.png", screen);
 			}
@@ -335,17 +342,47 @@ void Enemy::InitBullet(Bullet* p_bullet, SDL_Renderer* screen)
 	if (p_bullet != NULL)
 	{
 		p_bullet->set_bullet_type(Bullet::lazer_bullet);
+	
 		bool rec=p_bullet->loadImgBullet(screen);
 		if (rec)
 		{
 			p_bullet->set_is_move(true);
 			p_bullet->set_bullet_dir(Bullet::dir_left);
+			
 			p_bullet->SetRect(rect_.x + 10, y_pos_ + 10);
 			p_bullet->set_x_val(20);
 			bullet_list_.push_back(p_bullet);
 		}
 	}
 }
+
+/*void Enemy::InitBulletMove(Bullet* p_bullet, SDL_Renderer* screen)
+{
+	if (p_bullet != NULL)
+	{
+		p_bullet->set_bullet_type(Bullet::bigger_bullet);
+		bool rec = p_bullet->loadImgBullet(screen);
+		if (rec)
+		{
+			if (input_type.left == 1)
+			{
+				p_bullet->set_bullet_dir(Bullet::dir_left);
+				p_bullet->SetRect(rect_.x + 15, y_pos_ + 15);
+
+			}
+			if (input_type.right == 1)
+			{
+				p_bullet->set_bullet_dir(Bullet::dir_right);
+				p_bullet->SetRect(rect_.x + width_pic - 20,rect_.y + (height_pic) * 0.25);
+			}
+			p_bullet->set_x_val(20);
+			p_bullet->set_is_move(true);
+
+			move_bullet_list.push_back(p_bullet);
+		}
+	}
+}*/
+
 void Enemy::MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit,map& map_data)
 {
 	for (int i = 0; i < bullet_list_.size(); i++)
@@ -357,9 +394,9 @@ void Enemy::MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_li
 			{
 				int bullet_distance = rect_.x + width_pic - p_bullet->GetRect().x;
 				if(bullet_distance<300 && bullet_distance > 0)
-				{
-					p_bullet->hand_Move(x_limit, y_limit,map_data);
-					p_bullet->Render(screen);
+				{					
+					p_bullet->hand_Move(x_limit, y_limit,map_data,map_x,map_y);
+					p_bullet->Render(screen);					
 				}
 				else
 				{
@@ -370,6 +407,7 @@ void Enemy::MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_li
 			{
 				p_bullet->set_is_move(true);
 				p_bullet->SetRect(rect_.x + 10, y_pos_ + 10);
+				//mp_bullet->SetRect(rect_.x + 15, y_pos_ + 15);
 			}
 		}
 	}

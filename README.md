@@ -9,5 +9,7 @@ Chạy chương trình ban đầu nếu thầy/cô thấy nó chậm hiện th�
 Cách chơi:
 
 Dùng phím mũi tên <- và -> để di chuyển và các phím mũi tên để chỉnh hướng đạn.
+
 Dùng chuột trái để bắn đạn, chuột phải để nhảy.
+
 Dùng phím 1 và 2 để đổi đạn.

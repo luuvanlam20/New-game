@@ -53,6 +53,7 @@ bool InitData()
         g_sound_bullet[1] = Mix_LoadWAV("sound//Fire1.wav");
         g_sound_exp[0] = Mix_LoadWAV("sound//Explosion+1.wav");
         g_sound_exp[1] = Mix_LoadWAV("sound//Bomb1.wav");
+        g_main_sound = Mix_LoadWAV("sound//Heroes-Tonight-Janji_-Johnning-_128kbps_MP3_.wav");
         if (g_sound_bullet[0] == NULL || g_sound_bullet[1] == NULL || g_sound_exp[0]==NULL|| g_sound_exp[1]==NULL)
         {
             success = false;
@@ -140,6 +141,17 @@ int main(int argc, char* argv[])
         return -1;
 
 
+    int ret_menu = SDLCommonFuc::ShowMenu(g_screen, font_time);
+    bool is_quit = false;
+    if (ret_menu == 1)
+    {
+        is_quit = true;
+
+        close();
+        return 0;
+    }
+
+    Mix_PlayChannel(-1, g_main_sound, 2);
     //map
     bando game_map;
     game_map.LoadMap("map/map01.dat");
@@ -188,21 +200,13 @@ int main(int argc, char* argv[])
     TextObject money_game;
     money_game.SetColor(TextObject::WHITE_TEXT);
 
-    bool is_quit = false;
-
-
-    int ret_menu = SDLCommonFuc::ShowMenu(g_screen, font_time);
-
-    if (ret_menu == 1)
-    {
-        is_quit = true;
-    }
-
-
-    
     while (!is_quit)
     {
-        fps_times.start();
+        if (ret_menu == 0) 
+        {
+            fps_times.start();
+        }
+        
        //nhan vao khi nhap
         while (SDL_PollEvent(&g_event) != 0)
         {
@@ -217,16 +221,21 @@ int main(int argc, char* argv[])
 
         //anh nen
         g_background.Render(g_screen, NULL);
+
         //map
         map map_data = game_map.getMap();
+
+   
+        game_map.DrawMap(g_screen);
         //nhan vat
-        player.HandleBullet(g_screen);
+        
         player.SetMapXY(map_data.stratX, map_data.stratY);
+        player.HandleBullet(g_screen, map_data);
         player.dichuyen(map_data);
         player.show(g_screen);
+
         //map
         game_map.SetMap(map_data);
-        game_map.DrawMap(g_screen);
 
         //ve khung
         HINH_HOC_FORMAT HCN(0, 0, SCREEN_WIDTH, 50);
@@ -236,6 +245,7 @@ int main(int argc, char* argv[])
         HINH_HOC_FORMAT vien(1, 1, SCREEN_WIDTH-1, 48);
         MAU_SAC mauvien(245, 245, 31);
         HINH::VIEN(vien, mauvien, g_screen);
+        //show power
 
         player_power.show(g_screen);
         player_money.show(g_screen);
@@ -249,7 +259,7 @@ int main(int argc, char* argv[])
                 p_enemy->SetMapXY(map_data.stratX, map_data.stratY);
                 p_enemy->ImgMoveType(g_screen);
                 p_enemy->doEnemy(map_data);
-                p_enemy->MakeBullet(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
+                p_enemy->MakeBullet(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT,map_data);
                 p_enemy->show(g_screen);
 
                 SDL_Rect rect_player = player.GetRectFrame();
@@ -290,14 +300,15 @@ int main(int argc, char* argv[])
                     }
 
                     //time_die++;
-                    player.Die_incre();
-                    if (player.Get_die_time() < 3)
+                    player.Lives_decre();
+                    if (player.Get_lives_left() > 0)
                     {
                         player.SetRect(0, 0);
                         player.set_time_back(60);
                         SDL_Delay(1000);
+                        player_power.SetLives(player.Get_lives_left());
                         player_power.decrease();
-                        player_power.Render(g_screen);
+                       // player_power.Render(g_screen);
                         continue;
                     }
                     else
@@ -312,10 +323,14 @@ int main(int argc, char* argv[])
                     }
                     
                 }
-                if (player.Get_die_time() >= 3)
+                player_power.SetLives(player.Get_lives_left());
+                player_power.decrease();
+                //player_power.Render(g_screen);
+                if (player.Get_lives_left() <= 0)
                 {
                     if (MessageBox(NULL, L"Game Over!", L"Infor", MB_OK | MB_ICONSTOP) == IDOK)
                     {
+                    
                         player.Free();
                         close();
                         SDL_Quit();
@@ -438,6 +453,7 @@ int main(int argc, char* argv[])
         }
     }
     enemy_list.clear();
+
     close();
     return 0;
 }

@@ -17,6 +17,7 @@ static SDL_Renderer* g_screen = NULL;
 static SDL_Event g_event;
 static Mix_Chunk* g_sound_bullet[3];
 static Mix_Chunk* g_sound_exp[2];
+static Mix_Chunk* g_main_sound;
 
 //Screen
 const int FRAME_PER_SECOND = 40;
@@ -33,7 +34,7 @@ const int COLOR_KEY_B = 180;//ma mau nen nhan vat
 
 const int RENDER_DRAW_COLOR = 0xff;//mau trang
 
-#define tien 4
+#define MONEY_TILE 4
 #define chotrong 0
 #define TILE_SIZE 64//co mat xich ban do
 #define MAPMAX_X 400//so mat xich theo X

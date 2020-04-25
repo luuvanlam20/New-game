@@ -36,13 +36,13 @@ public:
 
 	}
 	std::vector<Bullet*> get_bullet_list()const { return p_bullet_list_; }
-	void HandleBullet(SDL_Renderer* des);
+	void HandleBullet(SDL_Renderer* des,map& map_data);
 	void RemoveBullet(const int& id);
 	void ThemTien();
 	void set_time_back(const int& cb_time) { time_back = cb_time; }
 	int GetMoney()const { return money; }
-	void Die_incre();
-	int Get_die_time()const { return time_die; }
+	void Lives_decre();
+	int Get_lives_left()const { return lives_left; }
 
 private:
 	int money;
@@ -67,7 +67,9 @@ private:
 
 	int time_back;
 
-	int time_die;
+	int lives_left;
+
+	int bullet_type;
 
 };
 

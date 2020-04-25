@@ -29,11 +29,11 @@ int SDLCommonFuc::ShowMenu(SDL_Renderer* screen, TTF_Font* font)
     const int kMenuItemNum = 2;
     SDL_Rect selec[2];
     SDL_Rect pos_arr[kMenuItemNum];
-    pos_arr[0].x = 200;
+    pos_arr[0].x = 400;
     pos_arr[0].y = 300;
     selec[0] = { pos_arr[0].x ,pos_arr[0].y,150,30 };
 
-    pos_arr[1].x = 200;
+    pos_arr[1].x = 400;
     pos_arr[1].y = 400;
     selec[1] = { pos_arr[1].x ,pos_arr[1].y,80,30 };
 
@@ -81,7 +81,7 @@ int SDLCommonFuc::ShowMenu(SDL_Renderer* screen, TTF_Font* font)
                         if (selected[i] == false)
                         {
                             selected[i] = true;
-                            text_menu[i].SetColor(TextObject::BLACK_TEXT);
+                            text_menu[i].SetColor(TextObject::WHITE_TEXT);
                             text_menu[i].LoadFromRenderText(font, screen);
                         }
                     }

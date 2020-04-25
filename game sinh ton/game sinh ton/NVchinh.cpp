@@ -26,7 +26,8 @@ NVchinh::NVchinh()
 	map_y_ = 0;
 	time_back = 0;
 	money = 0;
-	time_die = 0;
+	lives_left = 3;
+	bullet_type = 1;
 }
 NVchinh::~NVchinh()
 {
@@ -147,14 +148,36 @@ void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* b
 		}
 		break;
 		
-		/*case(SDLK_UP):
+		case(SDLK_UP):
 		{
 			//status = JUMP;
-			input_type.jump = 1;
-			input_type.left = 0;
-			input_type.right = 0;
+			input_type.up = 1;
 		}
-		break;*/
+		break;
+		case(SDLK_DOWN):
+		{
+			input_type.down = 1;
+		}
+		break;
+		case(SDLK_1):
+		{
+			
+			if (bullet_type == 1)
+			{
+				bullet_type = 2;
+			}
+			
+		}
+		break;
+		case(SDLK_2):
+		{
+			if (bullet_type == 2)
+			{
+				bullet_type = 1;
+			}
+			
+		}
+		break;
 		}
 	}
 	else if (event.type == SDL_KEYUP)
@@ -175,12 +198,16 @@ void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* b
 
 		}
 		break;
-		/*case(SDLK_w):
+		case(SDLK_UP):
 		{
-			input_type.jump = 0;
-
+			input_type.up = 0;
 		}
-		break;*/
+		break;
+		case(SDLK_DOWN):
+		{
+			input_type.down = 0;
+		}
+		break;
 		}
 	}
 	if (event.type == SDL_MOUSEBUTTONDOWN)
@@ -188,20 +215,82 @@ void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* b
 		if (event.button.button == SDL_BUTTON_LEFT)
 		{
 			Bullet* p_bullet = new Bullet();
-			p_bullet->set_bullet_type(Bullet::lazer_bullet);
+			if (bullet_type == 1) 
+			{
+				p_bullet->set_bullet_type(Bullet::lazer_bullet);
+			}
+			if (bullet_type == 2)
+			{
+				p_bullet->set_bullet_type(Bullet::bigger_bullet);
+			}
 			p_bullet->loadImgBullet(screen);
 
 			if (status == LEFT)
 			{
-				p_bullet->set_bullet_dir(Bullet::dir_left);
-				p_bullet->SetRect(this->rect_.x ,rect_.y + (height_pic) * 0.25);
-				Mix_PlayChannel(-1, bullet_sound[0], 0);
+				if (input_type.up == 0 && input_type.down == 0)
+				{
+					p_bullet->set_bullet_dir(Bullet::dir_left);
+					p_bullet->SetRect(this->rect_.x, rect_.y + (height_pic) * 0.25);
+					Mix_PlayChannel(-1, bullet_sound[0], 0);
+				}
+				else if (input_type.up == 1 && input_type.down == 0 && input_type.left == 1)
+				{
+					p_bullet->set_bullet_dir(Bullet::dir_up_left);
+					p_bullet->SetRect(this->rect_.x, rect_.y + (height_pic) * 0.25);
+					Mix_PlayChannel(-1, bullet_sound[0], 0);
+				}
+				else if (input_type.up == 0 && input_type.down == 1 && input_type.left == 1)
+				{
+					p_bullet->set_bullet_dir(Bullet::dir_down_left);
+					p_bullet->SetRect(this->rect_.x, rect_.y + (height_pic) * 0.25);
+					Mix_PlayChannel(-1, bullet_sound[0], 0);
+				}
+				else if (input_type.up == 1 && input_type.down == 0 && input_type.left == 0)
+				{
+					p_bullet->set_bullet_dir(Bullet::dir_up);
+					p_bullet->SetRect(this->rect_.x, rect_.y + (height_pic) * 0.25);
+					Mix_PlayChannel(-1, bullet_sound[0], 0);
+				}
+				else if (input_type.up == 0 && input_type.down == 1 && input_type.left == 0)
+				{
+					p_bullet->set_bullet_dir(Bullet::dir_down);
+					p_bullet->SetRect(this->rect_.x, rect_.y + (height_pic) * 0.25);
+					Mix_PlayChannel(-1, bullet_sound[0], 0);
+				}
+				
 			}
 			else
 			{
-				p_bullet->set_bullet_dir(Bullet::dir_right);
-				p_bullet->SetRect(this->rect_.x + width_pic - 20, this->rect_.y + (height_pic) * 0.25);
-				Mix_PlayChannel(-1, bullet_sound[0], 0);
+				if (input_type.up == 0 && input_type.down == 0)
+				{
+					p_bullet->set_bullet_dir(Bullet::dir_right);
+					p_bullet->SetRect(this->rect_.x  + width_pic - 20, this->rect_.y + (height_pic) * 0.25);
+					Mix_PlayChannel(-1, bullet_sound[0], 0);
+				}
+				else if (input_type.up == 1 && input_type.down == 0 && input_type.right == 1)
+				{
+					p_bullet->set_bullet_dir(Bullet::dir_up_right);
+					p_bullet->SetRect(this->rect_.x + width_pic - 20, this->rect_.y + (height_pic) * 0.25);
+					Mix_PlayChannel(-1, bullet_sound[0], 0);
+				}
+				else if (input_type.up == 0 && input_type.down == 1 && input_type.right == 1)
+				{
+					p_bullet->set_bullet_dir(Bullet::dir_down_right);
+					p_bullet->SetRect(this->rect_.x + width_pic - 20, this->rect_.y + (height_pic) * 0.25);
+					Mix_PlayChannel(-1, bullet_sound[0], 0);
+				}
+				else if (input_type.up == 1 && input_type.down == 0 && input_type.right == 0)
+				{
+					p_bullet->set_bullet_dir(Bullet::dir_up);
+					p_bullet->SetRect(this->rect_.x + width_pic - 20, this->rect_.y + (height_pic) * 0.25);
+					Mix_PlayChannel(-1, bullet_sound[0], 0);
+				}
+				else if (input_type.up == 0 && input_type.down == 1 && input_type.right == 0)
+				{
+					p_bullet->set_bullet_dir(Bullet::dir_down);
+					p_bullet->SetRect(this->rect_.x + width_pic - 20, this->rect_.y + (height_pic) * 0.25);
+					Mix_PlayChannel(-1, bullet_sound[0], 0);
+				}
 			}
 
 			
@@ -219,7 +308,7 @@ void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* b
 	}
 }
 
-void NVchinh::HandleBullet(SDL_Renderer* des)
+void NVchinh::HandleBullet(SDL_Renderer* des,map& map_data)
 {
 	for (int i = 0; i < p_bullet_list_.size(); i++)
 	{
@@ -228,7 +317,8 @@ void NVchinh::HandleBullet(SDL_Renderer* des)
 		{
 			if (p_bullet->get_is_move() == true)
 			{
-				p_bullet->hand_Move(SCREEN_WIDTH, SCREEN_HEIGHT);
+				p_bullet->hand_Move(SCREEN_WIDTH, SCREEN_HEIGHT,map_data);
+				//p_bullet->vacham(map_data);
 				p_bullet->Render(des);
 			}
 			else
@@ -351,7 +441,7 @@ void NVchinh::vacham(map& map_data)
 			int val1 = map_data.tile[y1][x2];
 			int val2 = map_data.tile[y2][x2];
 
-			if (val1 == tien || val2 == tien)
+			if (val1 == MONEY_TILE || val2 == MONEY_TILE)
 			{
 				map_data.tile[y1][x2] = 0;
 				map_data.tile[y2][x2] = 0;
@@ -374,7 +464,7 @@ void NVchinh::vacham(map& map_data)
 		{
 			int val1 = map_data.tile[y1][x1];
 			int val2 = map_data.tile[y2][x1];
-			if (val1 == tien || val2 == tien)
+			if (val1 == MONEY_TILE || val2 == MONEY_TILE)
 			{
 				map_data.tile[y1][x1] = 0;
 				map_data.tile[y2][x1] = 0;
@@ -408,7 +498,7 @@ void NVchinh::vacham(map& map_data)
 		{
 			int val1 = map_data.tile[y2][x1];
 			int val2 = map_data.tile[y2][x2];
-			if (val1 == tien || val2 == tien) {
+			if (val1 == MONEY_TILE || val2 == MONEY_TILE) {
 				map_data.tile[y2][x1] = 0;
 				map_data.tile[y2][x2] = 0;
 				ThemTien();
@@ -429,7 +519,7 @@ void NVchinh::vacham(map& map_data)
 		{
 			int val1 = map_data.tile[y1][x1];
 			int val2 = map_data.tile[y1][x2];
-			if (val1 == tien || val2 == tien)
+			if (val1 == MONEY_TILE || val2 == MONEY_TILE)
 			{
 				map_data.tile[y1][x1] = 0;
 				map_data.tile[y1][x2] = 0;
@@ -467,7 +557,7 @@ void NVchinh::vacham(map& map_data)
 		//y_pos = map_data.max_Y - height_pic - 1;
 		on_groud = false;
 		status = -1;
-		Die_incre();
+		Lives_decre();
 		//PlayerPower::decrease();
 	}
 }
@@ -475,9 +565,9 @@ void NVchinh::ThemTien()
 {
 	money++;
 }
-void NVchinh::Die_incre()
+void NVchinh::Lives_decre()
 {
-	time_die++;
+	lives_left--;
 }
 
 void NVchinh::updateImg(SDL_Renderer* des)

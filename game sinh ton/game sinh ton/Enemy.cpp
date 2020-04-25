@@ -204,7 +204,7 @@ void Enemy::vacham(map& gMap)
 			int val1 = gMap.tile[y1][x2];
 			int val2 = gMap.tile[y2][x2];
 
-			if (val1 != chotrong && val1 != tien || val2 != chotrong && val2 != tien)
+			if (val1 != chotrong && val1 != MONEY_TILE || val2 != chotrong && val2 != MONEY_TILE)
 			{
 				x_pos_ = x2 * TILE_SIZE;
 				x_pos_ -= (width_pic + 1);
@@ -219,7 +219,7 @@ void Enemy::vacham(map& gMap)
 			int val1 = gMap.tile[y1][x1];
 			int val2 = gMap.tile[y2][x1];
 			
-			if (val1 != chotrong && val1 != tien || val2 != chotrong && val2 != tien)
+			if (val1 != chotrong && val1 != MONEY_TILE || val2 != chotrong && val2 != MONEY_TILE)
 			{
 				x_pos_ = (x1 + 1) * TILE_SIZE;
 				//x_pos += width_pic ;
@@ -246,7 +246,7 @@ void Enemy::vacham(map& gMap)
 			int val1 = gMap.tile[y2][x1];
 			int val2 = gMap.tile[y2][x2];
 			
-			if (val1 != chotrong && val1 != tien || val2 != chotrong && val2 != tien)
+			if (val1 != chotrong && val1 != MONEY_TILE || val2 != chotrong && val2 != MONEY_TILE)
 			{
 				y_pos_ = y2 * TILE_SIZE;
 				y_pos_ -= height_pic + 1;
@@ -261,7 +261,7 @@ void Enemy::vacham(map& gMap)
 			int val1 = gMap.tile[y1][x1];
 			int val2 = gMap.tile[y1][x2];
 			
-			if (val1 != chotrong && val1 != tien || val2 != chotrong && val2 != tien)
+			if (val1 != chotrong && val1 != MONEY_TILE || val2 != chotrong && val2 != MONEY_TILE)
 			{
 				y_pos_ = (y1 + 1) * TILE_SIZE;
 				//x_pos += width_pic ;
@@ -346,7 +346,7 @@ void Enemy::InitBullet(Bullet* p_bullet, SDL_Renderer* screen)
 		}
 	}
 }
-void Enemy::MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit)
+void Enemy::MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit,map& map_data)
 {
 	for (int i = 0; i < bullet_list_.size(); i++)
 	{
@@ -358,7 +358,7 @@ void Enemy::MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_li
 				int bullet_distance = rect_.x + width_pic - p_bullet->GetRect().x;
 				if(bullet_distance<300 && bullet_distance > 0)
 				{
-					p_bullet->hand_Move(x_limit, y_limit);
+					p_bullet->hand_Move(x_limit, y_limit,map_data);
 					p_bullet->Render(screen);
 				}
 				else

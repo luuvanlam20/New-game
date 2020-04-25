@@ -48,7 +48,7 @@ public:
 	std::vector<Bullet*> get_bullet_list()const { return bullet_list_; }
 	void set_bullet_list(const std::vector<Bullet*> bl_list) { bullet_list_ = bl_list; }
 	void InitBullet(Bullet* p_bullet, SDL_Renderer* screen);
-	void MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit);
+	void MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit,map& map_data);
 	void RemoveBullet(const int& id);
 	
 

@@ -16,6 +16,7 @@ public:
 
 
 	void Setnum(const int& num) { number_ = num; }
+	void SetLives(const int& lives) { lives_left = lives; }
 	void Addpos(const int& pos);
 	void show(SDL_Renderer* screen);
 	void init(SDL_Renderer* screen);
@@ -27,6 +28,7 @@ public:
 
 private:
 	int number_;
+	int lives_left;
 	std::vector<int> post_list_;
 };
 

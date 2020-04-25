@@ -5,6 +5,8 @@ Bullet::Bullet()
 	x_val_ = 0;
 	y_val_ = 0;
 	is_move = false;
+	bullet_dir = 0;
+	bullet_type = 0;
 
 }
 
@@ -27,17 +29,21 @@ bool Bullet::loadImgBullet(SDL_Renderer* des)
 	{
 		rec=LoadImg("hinh//bomb_bullet.png", des);
 	}
+	
 	return rec;
 }
-void Bullet::hand_Move(const int& x_bor,const int & y_bor)
+void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data)
 {
 	if (bullet_dir == dir_right)
 	{
 		rect_.x += x_val_;
+		//vacham(map_data);
 		if (rect_.x > x_bor)
 		{
 			is_move = false;
 		}
+
+
 	}
 	else if (bullet_dir == dir_left)
 	{
@@ -46,6 +52,8 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor)
 		{
 			is_move = false;
 		}
+
+
 	}
 	else if (bullet_dir == dir_up)
 	{
@@ -54,6 +62,7 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor)
 		{
 			is_move = false;
 		}
+
 	}
 	else if (bullet_dir == dir_down)
 	{
@@ -62,6 +71,7 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor)
 		{
 			is_move = false;
 		}
+
 	}
 	else if (bullet_dir == dir_up_left)
 	{
@@ -70,11 +80,13 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor)
 		{
 			is_move = false;
 		}
+
 		rect_.y -= y_val_;
 		if (rect_.y < 0)
 		{
 			is_move = false;
 		}
+
 	}
 	else if (bullet_dir == dir_up_right)
 	{
@@ -88,6 +100,7 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor)
 		{
 			is_move = false;
 		}
+
 	}
 	else if (bullet_dir == dir_down_left)
 	{
@@ -101,6 +114,7 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor)
 		{
 			is_move = false;
 		}
+
 	}
 	else if (bullet_dir == dir_down_right)
 	{
@@ -114,5 +128,112 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor)
 		{
 			is_move = false;
 		}
+
 	}
+	//vacham(x_bor,y_bor, map_data);
+}
+
+void Bullet::vacham( map& map_data)
+{
+	int x1 = 0;
+	int x2 = 0;
+
+	int y1 = 0;
+	int y2 = 0;
+
+	int m=0,n=0;
+
+	if (bullet_dir == dir_left || bullet_dir == dir_down_left || bullet_dir == dir_up_left)
+	{
+		m = -x_val_;
+	}
+	if (bullet_dir == dir_right || bullet_dir == dir_down_right || bullet_dir == dir_up_right)
+	{
+		m = x_val_;
+	}
+	if (bullet_dir == dir_up || bullet_dir == dir_up_left || bullet_dir == dir_up_right)
+	{
+		n = -y_val_;
+	}
+	if (bullet_dir == dir_down || bullet_dir == dir_down_left || bullet_dir == dir_down_right)
+	{
+		n = y_val_;
+	}
+
+	//kt chieu cao
+	int height_min = rect_.h < TILE_SIZE ? rect_.h : TILE_SIZE;
+
+	x1 = (rect_.x + m) / TILE_SIZE;
+	x2 = (rect_.x + m + rect_.w - 1) / TILE_SIZE;
+
+	y1 = (rect_.y) / TILE_SIZE;
+	y2 = (rect_.y + height_min - 1) / TILE_SIZE;
+
+	if (x1 >= 0 && x2 < MAPMAX_X && y1 >= 0 && y2 < MAPMAX_Y)
+	{
+		if (m > 0)//di chuyen sang ngang
+		{
+			int val1 = map_data.tile[y1][x2];
+			int val2 = map_data.tile[y2][x2];
+
+
+			if (val1 != chotrong && val1 != MONEY_TILE || val2 != chotrong && val2 != MONEY_TILE)
+			{
+				is_move = false;
+			}
+
+		}
+
+		else if (m < 0)
+		{
+			int val1 = map_data.tile[y1][x1];
+			int val2 = map_data.tile[y2][x1];
+
+			if (val1 != chotrong && val1 != MONEY_TILE || val2 != chotrong && val2 != MONEY_TILE)
+			{
+				is_move = false;
+			}
+
+
+		}
+	}
+	int width_min = rect_.w < TILE_SIZE ? rect_.w : TILE_SIZE;
+
+	x1 = (rect_.x) / TILE_SIZE;
+	x2 = (rect_.x + width_min - 1) / TILE_SIZE;
+
+	y1 = (rect_.y + n) / TILE_SIZE;
+	y2 = (rect_.y + n + rect_.h - 1) / TILE_SIZE;
+
+	if (x1 >= 0 && x2 < MAPMAX_X && y1 >= 0 && y2 < MAPMAX_Y)
+	{
+		if (n > 0)
+		{
+			int val1 = map_data.tile[y2][x1];
+			int val2 = map_data.tile[y2][x2];
+			
+				if (val1 != chotrong && val1 != MONEY_TILE || val2 != chotrong && val2 != MONEY_TILE)
+				{
+					is_move = false;
+				}
+			
+
+		}
+		else if (n < 0)
+		{
+			int val1 = map_data.tile[y1][x1];
+			int val2 = map_data.tile[y1][x2];
+
+			if (val1 != chotrong && val1 != MONEY_TILE || val2 != chotrong && val2 != MONEY_TILE)
+			{
+				is_move = false;
+			}
+
+
+		}
+	}
+	rect_.x += m;
+	rect_.y += n;
+
+	
 }

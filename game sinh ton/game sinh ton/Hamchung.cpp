@@ -251,13 +251,13 @@ int SDLCommonFuc::doHelp(SDL_Renderer* screen, TTF_Font* font)
 
 }
 
-int SDLCommonFuc::END(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
+bool SDLCommonFuc::END(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
 {
     Hamcoso g_end;
     bool ret = g_end.LoadImg("hinh//menu2.png", screen);
     if (ret == false)
     {
-        return 1;
+        return ret;
     }
 
     g_end.Render(screen, NULL);
@@ -351,8 +351,8 @@ int SDLCommonFuc::END(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
                     {
                         END_text[i].Free();
                     }
-                    return 1;
                     
+                    return true;
                 }
 
 
@@ -361,7 +361,7 @@ int SDLCommonFuc::END(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
             case SDL_KEYDOWN:
             {
                 if (end_evevt.key.keysym.sym == SDLK_ESCAPE)
-                    return 1;
+                    return true;
             }
             break;
             default:
@@ -370,16 +370,16 @@ int SDLCommonFuc::END(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
         }
     }
 
-    return 1;
+    return true;
 }
 
-int SDLCommonFuc::IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
+bool SDLCommonFuc::IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
 {
     Hamcoso g_win;
     bool ret = g_win.LoadImg("hinh//menu3.png", screen);
     if (ret == false)
     {
-        return 1;
+        return ret;
     }
 
     g_win.Render(screen, NULL);
@@ -405,8 +405,8 @@ int SDLCommonFuc::IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
 
 
     int xm = 0, ym = 0;
-    bool selected_help;
-    selected_help = false;
+    bool selected_win;
+    selected_win = false;
     SDL_Event win_evevt;
 
     while (true)
@@ -422,7 +422,7 @@ int SDLCommonFuc::IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
             switch (win_evevt.type)
             {
             case SDL_QUIT:
-                return 1;
+                return true;
             case SDL_MOUSEMOTION:
             {
                 xm = win_evevt.motion.x;
@@ -431,18 +431,18 @@ int SDLCommonFuc::IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
 
                 if (checkFocus(xm, ym, win_poss[1]))
                 {
-                    if (selected_help == false)
+                    if (selected_win == false)
                     {
-                        selected_help = true;
+                        selected_win = true;
                         WIN_text[1].SetColor(TextObject::YELLOW_TEXT);
                         WIN_text[1].LoadFromRenderText(font, screen);
                     }
                 }
                 else
                 {                   
-                    if (selected_help == true)
+                    if (selected_win == true)
                     {
-                        selected_help = false;
+                        selected_win = false;
                         WIN_text[1].SetColor(TextObject::RED_TEXT);
                         WIN_text[1].LoadFromRenderText(font, screen);
                     }
@@ -467,7 +467,7 @@ int SDLCommonFuc::IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
                     {
                         WIN_text[i].Free();
                     }
-                    return 1;
+                    return true;
 
                 }
 
@@ -477,7 +477,7 @@ int SDLCommonFuc::IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
             case SDL_KEYDOWN:
             {
                 if (win_evevt.key.keysym.sym == SDLK_ESCAPE)
-                    return 1;
+                    return true;
             }
             break;
             default:
@@ -486,7 +486,7 @@ int SDLCommonFuc::IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
         }
     }
 
-    return 1;
+    return true;
 }
 
 bool SDLCommonFuc::checkColisision(const SDL_Rect& obj1, const SDL_Rect& obj2)

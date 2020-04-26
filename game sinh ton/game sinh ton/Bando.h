@@ -8,7 +8,7 @@ class TileMap : public Hamcoso//ke thua ham co so
 {
 public:
 	TileMap() { ; }
-	~TileMap() { ; }
+	~TileMap() { Free(); }
 
 };
 

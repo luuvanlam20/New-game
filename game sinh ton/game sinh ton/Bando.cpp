@@ -1,6 +1,8 @@
 #include <iostream>
 #include "bando.h"
 
+
+
 void bando::LoadMap(const char* nap)
 {
 	FILE* fp = NULL;

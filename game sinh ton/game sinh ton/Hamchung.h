@@ -70,8 +70,8 @@ namespace SDLCommonFuc
 	bool checkFocus(const int& x,const int& y,const SDL_Rect& rect);
 
 	int doHelp(SDL_Renderer* screen, TTF_Font* font);
-	int END(SDL_Renderer* screen, TTF_Font* font,const UINT & mar);
-	int IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar);
+	bool END(SDL_Renderer* screen, TTF_Font* font,const UINT & mar);
+	bool IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar);
 
 }
 

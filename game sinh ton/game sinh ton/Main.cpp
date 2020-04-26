@@ -118,7 +118,7 @@ std::vector<Enemy*> MakeEnemyList()
         {
             p_enemy->LoadImg("hinh//threat_level.png", g_screen);
             p_enemy->set_clip();
-            p_enemy->set_x_pos(700+i*1200);
+            p_enemy->set_x_pos(750+i*1200);
             p_enemy->set_y_pos(250);
             p_enemy->set_type_move(Enemy::static_enemy);
 
@@ -328,8 +328,8 @@ int main(int argc, char* argv[])
                     }
                     else
                     {
-                        int end = SDLCommonFuc::END(g_screen,menu_font,mar_val);
-                        if (end==1)
+                        bool end = SDLCommonFuc::END(g_screen,menu_font,mar_val);
+                        if (end)
                         {
                             player.Free();
                             close();
@@ -344,8 +344,8 @@ int main(int argc, char* argv[])
                 //player_power.Render(g_screen);
                 if (player.Get_lives_left() <= 0)
                 {
-                    int end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
-                    if (end == 1)
+                    bool end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
+                    if (end)
                     {
                         player.Free();
                         close();
@@ -416,8 +416,8 @@ int main(int argc, char* argv[])
 
         if (val_time <= 0)
         {
-            int end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
-            if (end == 1)
+            bool end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
+            if (end)
             {
                 player.Free();
                 close();
@@ -451,8 +451,8 @@ int main(int argc, char* argv[])
 
         if (player.WIN() == true)
         {
-            int win = SDLCommonFuc::IS_WIN(g_screen, menu_font, mar_val);
-            if (win == 1)
+            bool win = SDLCommonFuc::IS_WIN(g_screen, menu_font, mar_val);
+            if (win)
             {
                 player.Free();
                 close();

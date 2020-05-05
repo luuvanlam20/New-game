@@ -488,7 +488,7 @@ bool SDLCommonFuc::IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
 
     return true;
 }
-
+//muon tu wed phattrienphanmem123az
 bool SDLCommonFuc::checkColisision(const SDL_Rect& obj1, const SDL_Rect& obj2)
 {
     int left_a = obj1.x;

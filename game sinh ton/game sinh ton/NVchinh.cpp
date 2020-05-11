@@ -135,7 +135,7 @@ void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* b
 			status = RIGHT;
 			input_type.right = 1;
 			input_type.left = 0;
-			input_type.jump = 0;
+			//input_type.jump = 0;
 			updateImg(screen);
 		}
 		break;
@@ -144,7 +144,7 @@ void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* b
 			status = LEFT;
 			input_type.left = 1;
 			input_type.right = 0;
-			input_type.jump = 0;
+			//input_type.jump = 0;
 			updateImg(screen);
 		}
 		break;

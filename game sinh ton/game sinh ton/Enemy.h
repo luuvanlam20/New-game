@@ -50,7 +50,9 @@ public:
 	void InitBullet(Bullet* p_bullet, SDL_Renderer* screen);
 	void MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit,map& map_data);
 	void RemoveBullet(const int& id);
-	
+
+	//void setisdead(bool dead) { isDead = dead; }
+	bool GetisDead()const { return isDead; }
 
 private:
 	int map_x;
@@ -73,6 +75,7 @@ private:
 
 	std::vector<Bullet*> bullet_list_;
 
+	bool isDead;
 };
 
 

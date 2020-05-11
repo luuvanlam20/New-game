@@ -22,7 +22,9 @@ Enemy::Enemy()
 	map_x = 0;
 	map_y = 0;
 	input_type.left = 0;
+	input_type.right = 0;
 	type_move = static_enemy;
+	isDead = false;
 }
 Enemy::~Enemy()
 {
@@ -204,6 +206,10 @@ void Enemy::vacham(map& gMap)
 				x_pos_ = x2 * TILE_SIZE;
 				x_pos_ -= (width_pic + 1);
 				x_val_ = 0;
+				enemy_b = x_pos_-10;
+				enemy_a = x_pos_ - 150;
+				input_type.left = 1;
+				input_type.right = 0;
 			}
 			else if (gMap.tile[y1][x2] == chotrong && gMap.tile[y2 + 1][x2] == chotrong && gMap.tile[y1][x2] == chotrong && gMap.tile[y2][x2] == chotrong)
 				on_ground = false;
@@ -219,6 +225,10 @@ void Enemy::vacham(map& gMap)
 				x_pos_ = (x1 + 1) * TILE_SIZE;
 				//x_pos += width_pic ;
 				x_val_ = 0;
+				enemy_a = x_pos_+10;
+				enemy_b = x_pos_ + 150;
+				input_type.left = 0;
+				input_type.right = 1;
 			}
 			else if (gMap.tile[y1 + 1][x1] == chotrong && gMap.tile[y2 + 1][x1] == chotrong && gMap.tile[y1][x1] == chotrong && gMap.tile[y2][x1] == chotrong)
 				on_ground = false;
@@ -285,6 +295,8 @@ void Enemy::vacham(map& gMap)
 		//y_pos = map_data.max_Y - height_pic - 1;
 		on_ground = false;
 		//status = -1;
+
+		isDead = true;
 		
 	}
 }

@@ -95,7 +95,7 @@ std::vector<Enemy*> MakeEnemyList()
             p_enemy->LoadImg("hinh//threat_left.png", g_screen);
             p_enemy->set_clip();
             p_enemy->set_type_move(Enemy::move_in_space);
-            p_enemy->set_x_pos(500 + i * 700);
+            p_enemy->set_x_pos(500 + i * 350);
             p_enemy->set_y_pos(200);
 
             int pos1 = p_enemy->get_x_pos() - 60;
@@ -118,7 +118,7 @@ std::vector<Enemy*> MakeEnemyList()
         {
             p_enemy->LoadImg("hinh//threat_level.png", g_screen);
             p_enemy->set_clip();
-            p_enemy->set_x_pos(750+i*1200);
+            p_enemy->set_x_pos(750+i*500);
             p_enemy->set_y_pos(250);
             p_enemy->set_type_move(Enemy::static_enemy);
 
@@ -268,6 +268,11 @@ int main(int argc, char* argv[])
             Enemy* p_enemy = enemy_list.at(i);
             if (p_enemy != NULL)
             {
+                if (p_enemy->GetisDead())
+                {
+                    p_enemy->Free();
+                    enemy_list.erase(enemy_list.begin() + i);
+                }
                 p_enemy->SetMapXY(map_data.stratX, map_data.stratY);
                 p_enemy->ImgMoveType(g_screen);
                 p_enemy->doEnemy(map_data);
@@ -328,6 +333,15 @@ int main(int argc, char* argv[])
                     }
                     else
                     {
+                        g_background.Free();
+                        player.Free();
+                        enemy_list.clear();
+                        mark_game.Free();
+                        time_game.Free();
+                        player_power.Free();
+                        player_money.Free();
+                        exp_enemy.Free();
+                        exp_main.Free();
                         bool end = SDLCommonFuc::END(g_screen,menu_font,mar_val);
                         if (end)
                         {
@@ -344,6 +358,15 @@ int main(int argc, char* argv[])
                 //player_power.Render(g_screen);
                 if (player.Get_lives_left() <= 0)
                 {
+                    g_background.Free();
+                    player.Free();
+                    enemy_list.clear();
+                    mark_game.Free();
+                    time_game.Free();
+                    player_power.Free();
+                    player_money.Free();
+                    exp_enemy.Free();
+                    exp_main.Free();
                     bool end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
                     if (end)
                     {
@@ -416,6 +439,15 @@ int main(int argc, char* argv[])
 
         if (val_time <= 0)
         {
+            g_background.Free();
+            player.Free();
+            enemy_list.clear();
+            mark_game.Free();
+            time_game.Free();
+            player_power.Free();
+            player_money.Free();
+            exp_enemy.Free();
+            exp_main.Free();
             bool end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
             if (end)
             {
@@ -451,6 +483,15 @@ int main(int argc, char* argv[])
 
         if (player.WIN() == true)
         {
+            g_background.Free();
+            player.Free();
+            enemy_list.clear();
+            mark_game.Free();
+            time_game.Free();
+            player_power.Free();
+            player_money.Free();
+            exp_enemy.Free();
+            exp_main.Free();
             bool win = SDLCommonFuc::IS_WIN(g_screen, menu_font, mar_val);
             if (win)
             {

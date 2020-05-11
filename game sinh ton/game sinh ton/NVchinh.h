@@ -1,5 +1,5 @@
 #ifndef NV_CHINH_H_
-#define NV_CHUNH_H_
+#define NV_CHINH_H_
 
 #include <vector>
 #include "Hamchung.h"

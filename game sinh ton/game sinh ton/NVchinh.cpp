@@ -1,39 +1,9 @@
 #include "NVchinh.h"
-//#include "playerPower.h"
-//#include "playerPower.cpp"
 #define tocdoroi 1
 #define tocdomax 10
 #define tocdochay 10
-#define lucnhay 18
+#define lucnhay 19
 
-NVchinh::NVchinh()
-{
-	frame = 0;
-	x_val = 0;
-	y_val = 0;
-	y_pos = 0;
-	x_pos = 0;
-	width_pic = 0;
-	height_pic = 0;
-	status = -1;
-	input_type.left = 0;
-	input_type.right = 0;
-	input_type.up = 0;
-	input_type.down = 0;
-	input_type.jump = 0;
-	on_groud = false;
-	map_x_ = 0;
-	map_y_ = 0;
-	time_back = 0;
-	money = 0;
-	lives_left = 3;
-	bullet_type = 1;
-	is_win = false;
-}
-NVchinh::~NVchinh()
-{
-
-}
 bool NVchinh::LoadImg(std::string path, SDL_Renderer* screen)
 {
 	bool ret = Hamcoso::LoadImg(path, screen);
@@ -121,7 +91,7 @@ void NVchinh::show(SDL_Renderer* des)
 		rect_.y = y_pos - map_y_;
 		SDL_Rect* clipHT = &pic_clip[frame];
 		SDL_Rect rederquad = { rect_.x,rect_.y,width_pic,height_pic };
-		SDL_RenderCopy(des, p_object_, clipHT, &rederquad);
+		SDL_RenderCopy(des, p_object_, clipHT, &rederquad);//render 1 phan hinh anh cua p_obj theo vi tris da cho
 	}
 }
 void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* bullet_sound[2])
@@ -135,7 +105,6 @@ void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* b
 			status = RIGHT;
 			input_type.right = 1;
 			input_type.left = 0;
-			//input_type.jump = 0;
 			updateImg(screen);
 		}
 		break;
@@ -144,14 +113,12 @@ void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* b
 			status = LEFT;
 			input_type.left = 1;
 			input_type.right = 0;
-			//input_type.jump = 0;
 			updateImg(screen);
 		}
 		break;
 		
 		case(SDLK_UP):
 		{
-			//status = JUMP;
 			input_type.up = 1;
 		}
 		break;
@@ -319,7 +286,6 @@ void NVchinh::HandleBullet(SDL_Renderer* des,map& map_data)
 			if (p_bullet->get_is_move() == true)
 			{
 				p_bullet->hand_Move(SCREEN_WIDTH, SCREEN_HEIGHT,map_data,map_x_,map_y_);
-				//p_bullet->vacham(map_data);
 				p_bullet->Render(des);
 			}
 			else
@@ -333,21 +299,6 @@ void NVchinh::HandleBullet(SDL_Renderer* des,map& map_data)
 			}
 		}
 
-	}
-}
-
-void NVchinh::RemoveBullet(const int& id)
-{
-	int sizebullet = p_bullet_list_.size();
-	if (sizebullet > 0 && id < sizebullet)
-	{
-		Bullet* p_bullet = p_bullet_list_.at(id);
-		p_bullet_list_.erase(p_bullet_list_.begin()+id);
-		if (p_bullet)
-		{
-			delete p_bullet;
-			p_bullet = NULL;
-		}
 	}
 }
 
@@ -456,7 +407,7 @@ void NVchinh::vacham(map& map_data)
 					x_pos -= (width_pic + 1);
 					x_val = 0;
 				}
-				else if (map_data.tile[y1+1][x2] == chotrong && map_data.tile[y2 + 1][x2] == chotrong)
+				else if (map_data.tile[y1][x2] == chotrong && map_data.tile[y2][x2] == chotrong)
 					on_groud = false;
 			}
 		}
@@ -476,10 +427,9 @@ void NVchinh::vacham(map& map_data)
 				if (val1 != chotrong || val2 != chotrong)
 				{
 					x_pos = (x1 + 1) * TILE_SIZE;
-					//x_pos += width_pic ;
 					x_val = 0;
 				}
-				else if (map_data.tile[y1 + 1][x1] == chotrong && map_data.tile[y2 + 1][x1] == chotrong)
+				else if (map_data.tile[y1][x1] == chotrong && map_data.tile[y2][x1] == chotrong)
 					on_groud = false;
 			}
 			
@@ -531,7 +481,6 @@ void NVchinh::vacham(map& map_data)
 				if (val1 != chotrong || val2 != chotrong)
 				{
 					y_pos = (y1 + 1) * TILE_SIZE;
-					//x_pos += width_pic ;
 					y_val = 0;
 				}
 			}
@@ -544,10 +493,6 @@ void NVchinh::vacham(map& map_data)
 	{
 		x_pos = 0;
 	}
-	else if (x_pos + width_pic > map_data.max_X)
-	{
-		x_pos = map_data.max_X - width_pic - 1;
-	}
 	if (x_pos >= map_data.max_X - 400)
 	{
 		is_win = true;
@@ -559,11 +504,8 @@ void NVchinh::vacham(map& map_data)
 	else if (y_pos + height_pic > map_data.max_Y)
 	{
 		time_back = 10;
-		//y_pos = map_data.max_Y - height_pic - 1;
 		on_groud = false;
-		status = -1;
 		Lives_decre();
-		//PlayerPower::decrease();
 	}
 }
 void NVchinh::ThemTien()

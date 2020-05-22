@@ -36,7 +36,6 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data, const i
 {
 	if (bullet_dir == dir_right)
 	{
-		//rect_.x += x_val_;
 		vacham(map_data,map_x,map_y);
 		if (rect_.x > x_bor)
 		{
@@ -47,7 +46,6 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data, const i
 	}
 	else if (bullet_dir == dir_left)
 	{
-		//rect_.x -= x_val_;
 		vacham(map_data, map_x, map_y);
 		if (rect_.x < 0)
 		{
@@ -58,7 +56,6 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data, const i
 	}
 	else if (bullet_dir == dir_up)
 	{
-		//rect_.y -= y_val_;
 		vacham(map_data, map_x, map_y);
 		if (rect_.y < 0)
 		{
@@ -68,7 +65,6 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data, const i
 	}
 	else if (bullet_dir == dir_down)
 	{
-		//rect_.y += y_val_;
 		vacham(map_data, map_x, map_y);
 		if (rect_.y > y_bor)
 		{
@@ -78,14 +74,12 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data, const i
 	}
 	else if (bullet_dir == dir_up_left)
 	{
-		//rect_.x -= x_val_;
 		vacham(map_data, map_x, map_y);
 		if (rect_.x < 0)
 		{
 			is_move = false;
 		}
 
-		//rect_.y -= y_val_;
 		if (rect_.y < 0)
 		{
 			is_move = false;
@@ -94,13 +88,11 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data, const i
 	}
 	else if (bullet_dir == dir_up_right)
 	{
-		//rect_.x += x_val_;
 		vacham(map_data, map_x, map_y);
 		if (rect_.x > x_bor)
 		{
 			is_move = false;
 		}
-		//rect_.y -= y_val_;
 		if (rect_.y < 0)
 		{
 			is_move = false;
@@ -109,13 +101,11 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data, const i
 	}
 	else if (bullet_dir == dir_down_left)
 	{
-		//rect_.x -= x_val_;
 		vacham(map_data, map_x, map_y);
 		if (rect_.x < 0)
 		{
 			is_move = false;
 		}
-		//rect_.y += y_val_;
 		if (rect_.y > y_bor)
 		{
 			is_move = false;
@@ -124,20 +114,17 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data, const i
 	}
 	else if (bullet_dir == dir_down_right)
 	{
-		//rect_.x += x_val_;
 		vacham(map_data, map_x, map_y);
 		if (rect_.x > x_bor)
 		{
 			is_move = false;
 		}
-		//rect_.y += y_val_;
 		if (rect_.y > y_bor)
 		{
 			is_move = false;
 		}
 
 	}
-	//vacham(x_bor,y_bor, map_data);
 }
 
 void Bullet::vacham( map& map_data,const int& map_x,const int& map_y)
@@ -167,7 +154,6 @@ void Bullet::vacham( map& map_data,const int& map_x,const int& map_y)
 		n = y_val_;
 	}
 
-	//kt chieu cao
 	int height_min = rect_.h < TILE_SIZE ? rect_.h : TILE_SIZE;
 
 	x1 = (rect_.x + map_x + m) / TILE_SIZE;
@@ -178,7 +164,7 @@ void Bullet::vacham( map& map_data,const int& map_x,const int& map_y)
 
 	if (x1 >= 0 && x2 < MAPMAX_X && y1 >= 0 && y2 < MAPMAX_Y)
 	{
-		if (m > 0)//di chuyen sang ngang
+		if (m > 0)
 		{
 			int val1 = map_data.tile[y1][x2];
 			int val2 = map_data.tile[y2][x2];

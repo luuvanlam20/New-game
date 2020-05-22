@@ -6,7 +6,7 @@
 void bando::LoadMap(const char* nap)
 {
 	FILE* fp = NULL;
-	fopen_s(&fp, nap, "rb");//doc file
+	fopen_s(&fp, nap, "rb");//doc file bao mat
 	if (fp == NULL) {
 		return;
 	}
@@ -18,7 +18,7 @@ void bando::LoadMap(const char* nap)
 	{
 		for (int j = 0; j < MAPMAX_X; j++)
 		{
-			fscanf_s(fp, "%d", &ban_do.tile[i][j]);//lay gia tri vao tile
+			fscanf_s(fp, "%d", &ban_do.tile[i][j]);//doc gia tri tu file vao tile
 			int  val = ban_do.tile[i][j];
 			if (val > 0)
 			{

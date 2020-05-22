@@ -21,7 +21,7 @@ public:
 	void LoadTile(SDL_Renderer* screen);//load mat xich ban do
 	void DrawMap(SDL_Renderer* screen);//ve ban do
 	map getMap()const { return ban_do; };//lay ban do
-	void SetMap(map& map_data) { ban_do = map_data; }//cai dat ban do
+	void SetMap(map& map_data) { ban_do = map_data; }//cai dat ban do,cap nhat ban do
 private:
 	map ban_do;
 	TileMap tile_map[MAXTILE];

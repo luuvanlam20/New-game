@@ -52,7 +52,7 @@ void PlayerPower::decrease()
 }
 void PlayerPower::initcreas()
 {
-	if (lives_left > number_)
+	if (lives_left < number_)
 	{
 		number_++;
 		int last_pos = post_list_.back();

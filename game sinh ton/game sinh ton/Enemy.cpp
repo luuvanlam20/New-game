@@ -5,31 +5,7 @@
 #define tocdochay 10
 #define lucnhay 18
 
-Enemy::Enemy()
-{
-	width_pic = 0;
-	height_pic = 0;
-	x_pos_ = 0;
-	y_pos_ = 0;
-	x_val_ = 0;
-	y_val_ = 0;
-	on_ground = false;
-	come_back = 0;
-	frame_ = 0;
 
-	enemy_a = 0;
-	enemy_b = 0;
-	map_x = 0;
-	map_y = 0;
-	input_type.left = 0;
-	input_type.right = 0;
-	type_move = static_enemy;
-	isDead = false;
-}
-Enemy::~Enemy()
-{
-
-}
 bool Enemy::LoadImg(std::string path, SDL_Renderer* screen)
 {
 	bool ret = Hamcoso::LoadImg(path, screen);
@@ -100,8 +76,6 @@ void Enemy::set_clip()
 }
 void Enemy::show(SDL_Renderer* des)
 {
-	if (come_back == 0)
-	{
 		rect_.x = x_pos_ - map_x;
 		rect_.y = y_pos_ - map_y;
 		frame_++;
@@ -111,69 +85,29 @@ void Enemy::show(SDL_Renderer* des)
 		}
 		SDL_Rect* clipHT = &pic_clip[frame_];
 		SDL_Rect rederquad = { rect_.x,rect_.y,width_pic,height_pic };
-		SDL_RenderCopy(des, p_object_, clipHT, &rederquad);
-	}
+		SDL_RenderCopy(des, p_object_, clipHT, &rederquad);//render 1 phan hinh anh cua p_obj theo vi tris da cho
 }
 
 void Enemy::doEnemy(map& gMap)
 {
-	if (come_back == 0) {
-		x_val_ = 0;
-		y_val_ += tocdoroi;
-		if (y_val_ >= tocdomax)
-		{
-			y_val_ = tocdomax;
-		}
-		if (input_type.left == 1)
-		{
-			x_val_ -= tocdochay;
-		}
-		
-		if (input_type.right == 1)
-		{
-			x_val_ += tocdochay;
-		}
-		
-		vacham(gMap);
-	}
-	else
-	{
-		come_back--;
-		if (come_back == 0)
-		{
-			InitEnemy();
-		}
-
-	}
-}
-
-void Enemy::InitEnemy()
-{
-	x_val_ = 0;
-	y_val_ = 0;
-
-	x_pos_ +=400;
-	y_pos_ = 0;
 	
-	come_back = 0;
-	input_type.left = 1;
-}
-
-void Enemy::RemoveBullet(const int& id)
-{
-	int sizebullet = bullet_list_.size();
-	if (sizebullet > 0 && id < sizebullet)
+	x_val_ = 0;
+	y_val_ += tocdoroi;
+	if (y_val_ >= tocdomax)
 	{
-		Bullet* p_bullet = bullet_list_.at(id);
-		
-		bullet_list_.erase(bullet_list_.begin() + id);
-		
-		if (p_bullet)
-		{			
-			delete p_bullet;
-			p_bullet = NULL;			
-		}
+		y_val_ = tocdomax;
 	}
+	if (input_type.left == 1)
+	{
+		x_val_ -= tocdochay;
+	}
+		
+	if (input_type.right == 1)
+	{
+		x_val_ += tocdochay;
+	}
+	
+	vacham(gMap);
 }
 
 void Enemy::vacham(map& gMap)
@@ -211,8 +145,6 @@ void Enemy::vacham(map& gMap)
 				input_type.left = 1;
 				input_type.right = 0;
 			}
-			else if (gMap.tile[y1][x2] == chotrong && gMap.tile[y2 + 1][x2] == chotrong && gMap.tile[y1][x2] == chotrong && gMap.tile[y2][x2] == chotrong)
-				on_ground = false;
 		}
 
 		else if (x_val_ < 0)
@@ -223,17 +155,12 @@ void Enemy::vacham(map& gMap)
 			if (val1 != chotrong && val1 != MONEY_TILE || val2 != chotrong && val2 != MONEY_TILE)
 			{
 				x_pos_ = (x1 + 1) * TILE_SIZE;
-				//x_pos += width_pic ;
 				x_val_ = 0;
 				enemy_a = x_pos_+10;
 				enemy_b = x_pos_ + 150;
 				input_type.left = 0;
 				input_type.right = 1;
 			}
-			else if (gMap.tile[y1 + 1][x1] == chotrong && gMap.tile[y2 + 1][x1] == chotrong && gMap.tile[y1][x1] == chotrong && gMap.tile[y2][x1] == chotrong)
-				on_ground = false;
-
-
 		}
 	}
 	int width_min = width_pic < TILE_SIZE ? width_pic : TILE_SIZE;
@@ -261,21 +188,13 @@ void Enemy::vacham(map& gMap)
 
 
 		}
-		else if (y_val_ < 0)
-		{
-			int val1 = gMap.tile[y1][x1];
-			int val2 = gMap.tile[y1][x2];
-			
-			if (val1 != chotrong && val1 != MONEY_TILE || val2 != chotrong && val2 != MONEY_TILE)
-			{
-				y_pos_ = (y1 + 1) * TILE_SIZE;
-				//x_pos += width_pic ;
-				y_val_ = 0;
-			}
-
-		}
+	
 	}
-	x_pos_ += x_val_;
+	if (on_ground)
+	{
+		x_pos_ += x_val_;
+	}
+	
 	y_pos_ += y_val_;
 	if (x_pos_ < 0)
 	{
@@ -284,6 +203,7 @@ void Enemy::vacham(map& gMap)
 	else if (x_pos_ + width_pic > gMap.max_X)
 	{
 		x_pos_ = gMap.max_X - width_pic - 1;
+		isDead = true;
 	}
 	if (y_pos_ < 0)
 	{
@@ -291,13 +211,7 @@ void Enemy::vacham(map& gMap)
 	}
 	else if (y_pos_ + height_pic > gMap.max_Y)
 	{
-		come_back = 10;
-		//y_pos = map_data.max_Y - height_pic - 1;
-		on_ground = false;
-		//status = -1;
-
-		isDead = true;
-		
+		isDead = true;	
 	}
 }
 
@@ -311,11 +225,32 @@ void Enemy::ImgMoveType(SDL_Renderer* screen)
 	{
 		if (on_ground == true)
 		{
+
 			if (x_pos_ > enemy_b)
 			{
 				input_type.left = 1;				
 				input_type.right = 0;
 				LoadImg("hinh//threat_left.png", screen);
+				if(dan==0)
+				{
+					
+					Bullet* p_bullet = new Bullet();
+					p_bullet->set_bullet_type(Bullet::bigger_bullet);
+					bool rec = p_bullet->loadImgBullet(screen);
+					if (rec)
+					{
+						p_bullet->set_is_move(true);
+						p_bullet->set_bullet_dir(Bullet::dir_left);
+						p_bullet->SetRect(rect_.x + 10, y_pos_ + 15);
+						p_bullet->set_x_val(20);
+						bullet_list_.push_back(p_bullet);
+					}
+					
+					dan = 1;
+				}
+				
+				
+
 			}
 			else
 			{
@@ -325,6 +260,23 @@ void Enemy::ImgMoveType(SDL_Renderer* screen)
 					input_type.right = 1;
 					
 					LoadImg("hinh//threat_right.png", screen);
+					if (dan==1)
+					{
+						
+						Bullet* p_bullet = new Bullet();
+						p_bullet->set_bullet_type(Bullet::bigger_bullet);
+						bool rec = p_bullet->loadImgBullet(screen);
+						if (rec)
+						{
+							p_bullet->set_is_move(true);
+							p_bullet->set_bullet_dir(Bullet::dir_right);
+							p_bullet->SetRect(rect_.x + width_pic + 10, y_pos_ + 15);
+							p_bullet->set_x_val(20);
+							bullet_list_.push_back(p_bullet);
+						}						
+						dan = 2;
+					}
+					
 				}
 			}
 		}
@@ -341,18 +293,24 @@ void Enemy::InitBullet(Bullet* p_bullet, SDL_Renderer* screen)
 {
 	if (p_bullet != NULL)
 	{
+		
 		p_bullet->set_bullet_type(Bullet::lazer_bullet);
-
+		
+		
 		bool rec=p_bullet->loadImgBullet(screen);
 		if (rec)
 		{
+
 			p_bullet->set_is_move(true);
 
 			p_bullet->set_bullet_dir(Bullet::dir_left);
-			
+
 			p_bullet->SetRect(rect_.x + 10, y_pos_ + 10);
+				
 			p_bullet->set_x_val(20);
+
 			bullet_list_.push_back(p_bullet);
+										
 		}
 	}
 }
@@ -364,14 +322,18 @@ void Enemy::MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_li
 	{
 		Bullet* p_bullet = bullet_list_.at(i);
 		if (p_bullet != NULL)
-		{
+		{	
 			if (p_bullet->get_is_move())
 			{
 				int bullet_distance = rect_.x + width_pic - p_bullet->GetRect().x;
-				if(bullet_distance<300 && bullet_distance > 0)
+				if(bullet_distance<300 && bullet_distance > -300)
 				{					
 					p_bullet->hand_Move(x_limit, y_limit,map_data,map_x,map_y);
-					p_bullet->Render(screen);					
+					if (on_ground)
+					{
+						p_bullet->Render(screen);
+					}
+									
 				}
 				else
 				{

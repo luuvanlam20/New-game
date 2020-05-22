@@ -86,8 +86,8 @@ std::vector<Enemy*> MakeEnemyList()
 {
     std::vector<Enemy*> enemy_list;
 
-    Enemy* enemy_obj_move = new Enemy[40];
-    for (int i = 0; i < 40; i++)
+    Enemy* enemy_obj_move = new Enemy[55];
+    for (int i = 0; i < 55; i++)
     {
         Enemy* p_enemy = (enemy_obj_move + i);
         if (p_enemy != NULL)
@@ -104,14 +104,14 @@ std::vector<Enemy*> MakeEnemyList()
             p_enemy->set_enemy_pos(pos1, pos2);
 
             p_enemy->set_input_left(1);
-
+           
             enemy_list.push_back(p_enemy);
 
         }
     }
 
-    Enemy* enemy_obj = new Enemy[40];
-    for (int i = 0; i < 40; i++)
+    Enemy* enemy_obj = new Enemy[55];
+    for (int i = 0; i < 55; i++)
     {
         Enemy* p_enemy = (enemy_obj + i);
         if (p_enemy != NULL)
@@ -122,10 +122,12 @@ std::vector<Enemy*> MakeEnemyList()
             p_enemy->set_y_pos(250);
             p_enemy->set_type_move(Enemy::static_enemy);
 
+            
             Bullet* p_bullet = new Bullet();
+
             p_enemy->InitBullet(p_bullet, g_screen);
-
-
+            
+                                  
             enemy_list.push_back(p_enemy);
 
         }
@@ -200,9 +202,6 @@ int main(int argc, char* argv[])
     }
     exp_main.set_clip();
 
-   // int time_die=0;
-
-    //Time text
 
     TextObject time_game;
     time_game.SetColor(TextObject::WHITE_TEXT);
@@ -213,125 +212,153 @@ int main(int argc, char* argv[])
     TextObject money_game;
     money_game.SetColor(TextObject::WHITE_TEXT);
 
+    int time_be_for_start = SDL_GetTicks();
+
     while (!is_quit)
     {
-        if (ret_menu == 0)
+        if (ret_menu == 0 && fps_times.is_paused() == false)
         {
-               fps_times.start();
-        }     
-       //nhan vao khi nhap
+            fps_times.start();
+        }
+        
+        //nhan vao khi nhap
         while (SDL_PollEvent(&g_event) != 0)
         {
             if (g_event.type == SDL_QUIT)
             {
                 is_quit = true;
             }
-            player.HandInputAction(g_event, g_screen,g_sound_bullet);
+            fps_times.un_pausel(g_event);
+            fps_times.pause(g_event);
+            player.HandInputAction(g_event, g_screen, g_sound_bullet);
         }
         SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
         SDL_RenderClear(g_screen);
-
-        //anh nen
-        g_background.Render(g_screen, NULL);
-
-        //map
-        map map_data = game_map.getMap();
-
-   
-        game_map.DrawMap(g_screen);
-        //nhan vat
-        
-        player.SetMapXY(map_data.stratX, map_data.stratY);
-        player.HandleBullet(g_screen, map_data);
-        player.dichuyen(map_data);
-        player.show(g_screen);
-
-        //map
-        game_map.SetMap(map_data);
-
-        //ve khung
-        HINH_HOC_FORMAT HCN(0, 0, SCREEN_WIDTH, 50);
-        MAU_SAC mau(71, 44, 107);
-        HINH::VE_HCN(HCN, mau, g_screen);
-
-        HINH_HOC_FORMAT vien(1, 1, SCREEN_WIDTH-1, 48);
-        MAU_SAC mauvien(245, 245, 31);
-        HINH::VIEN(vien, mauvien, g_screen);
-        //show power
-
-        player_power.show(g_screen);
-        player_money.show(g_screen);
-        
-
-        for (int i = 0; i < enemy_list.size(); i++)
+        if (fps_times.is_paused() == false)
         {
-            Enemy* p_enemy = enemy_list.at(i);
-            if (p_enemy != NULL)
-            {
-                if (p_enemy->GetisDead())
-                {
-                    p_enemy->Free();
-                    enemy_list.erase(enemy_list.begin() + i);
-                }
-                p_enemy->SetMapXY(map_data.stratX, map_data.stratY);
-                p_enemy->ImgMoveType(g_screen);
-                p_enemy->doEnemy(map_data);
-                p_enemy->MakeBullet(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT,map_data);
-                p_enemy->show(g_screen);
+            //anh nen
+            g_background.Render(g_screen, NULL);
 
-                SDL_Rect rect_player = player.GetRectFrame();
-                bool bCol1 = false;
-                std::vector<Bullet*> tbullet = p_enemy->get_bullet_list();
-                
-                for(int k = 0; k < tbullet.size(); k++)
-                {
-                    Bullet* enemy_bullet = tbullet.at(k);
-                    
-                    if (enemy_bullet)
+            //map
+            map map_data = game_map.getMap();
+
+
+            game_map.DrawMap(g_screen);
+            //nhan vat
+
+            player.SetMapXY(map_data.stratX, map_data.stratY);
+            player.HandleBullet(g_screen, map_data);
+            player.dichuyen(map_data);
+            player.show(g_screen);
+
+            //map
+            game_map.SetMap(map_data);
+
+            //ve khung
+            HINH_HOC_FORMAT HCN(0, 0, SCREEN_WIDTH, 50);
+            MAU_SAC mau(71, 44, 107);
+            HINH::VE_HCN(HCN, mau, g_screen);
+
+            HINH_HOC_FORMAT vien(1, 1, SCREEN_WIDTH - 1, 48);
+            MAU_SAC mauvien(245, 245, 31);
+            HINH::VIEN(vien, mauvien, g_screen);
+            //show power
+
+            player_power.show(g_screen);
+            player_money.show(g_screen);
+
+
+            for (int i = 0; i < enemy_list.size(); i++)
+            {
+                Enemy* p_enemy = enemy_list.at(i);
+                if (p_enemy != NULL)
+                {                 
+                    if (p_enemy->GetisDead())
                     {
-                        bCol1 = SDLCommonFuc::checkColisision(enemy_bullet->GetRect(), rect_player);
-                       
-                        if (bCol1)
+                        p_enemy->Free();
+                        enemy_list.erase(enemy_list.begin() + i);
+                    }
+                    p_enemy->SetMapXY(map_data.stratX, map_data.stratY);
+                    p_enemy->ImgMoveType(g_screen);
+                    p_enemy->doEnemy(map_data);
+                    p_enemy->MakeBullet(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT, map_data);
+                    p_enemy->show(g_screen);
+
+                    SDL_Rect rect_player = player.GetRectFrame();
+                    bool bCol1 = false;
+                    std::vector<Bullet*> tbullet = p_enemy->get_bullet_list();
+
+                    for (int k = 0; k < tbullet.size(); k++)
+                    {
+                        Bullet* enemy_bullet = tbullet.at(k);
+
+                        if (enemy_bullet)
                         {
-                            p_enemy->RemoveBullet(k);
-                            break;
+                            bCol1 = SDLCommonFuc::checkColisision(enemy_bullet->GetRect(), rect_player);
+
+                            if (bCol1)
+                            {
+                                enemy_bullet->set_is_move(false);                               
+                                break;
+                            }
                         }
                     }
-                }
 
-                SDL_Rect rect_enemy = p_enemy->GetRectFrame();
-                bool bCol2;
-                bCol2 = SDLCommonFuc::checkColisision(rect_player, rect_enemy);
+                    SDL_Rect rect_enemy = p_enemy->GetRectFrame();
+                    bool bCol2;
+                    bCol2 = SDLCommonFuc::checkColisision(rect_player, rect_enemy);
 
-                if (bCol1 || bCol2)
-                {
-                    for (int ex = 0; ex < Num_EX_frame; ex++)
+                    if (bCol1 || bCol2)
                     {
-                        int frame_exp_width = exp_main.get_frame_width();
-                        int frame_exp_height = exp_main.get_frame_height();
-                        int x_pos = (player.GetRect().x+player.GetRectFrame().w) - frame_exp_width * 0.5;
-                        int y_pos = (player.GetRect().y + player.GetRectFrame().h) - frame_exp_height * 0.5;
-                        Mix_PlayChannel(-1, g_sound_exp[1], 0);
-                        exp_main.set_frame(ex);
-                        exp_main.SetRect(x_pos, y_pos);
-                        exp_main.show(g_screen);
-                        SDL_RenderPresent(g_screen);
+                        for (int ex = 0; ex < Num_EX_frame; ex++)
+                        {
+                            int frame_exp_width = exp_main.get_frame_width();
+                            int frame_exp_height = exp_main.get_frame_height();
+                            int x_pos = (player.GetRect().x + player.GetRectFrame().w) - frame_exp_width * 0.5;
+                            int y_pos = (player.GetRect().y + player.GetRectFrame().h) - frame_exp_height * 0.5;
+                            Mix_PlayChannel(-1, g_sound_exp[1], 0);
+                            exp_main.set_frame(ex);
+                            exp_main.SetRect(x_pos, y_pos);
+                            exp_main.show(g_screen);
+                            SDL_RenderPresent(g_screen);
+
+                        }
+
+                        player.Lives_decre();
+                        if (player.Get_lives_left() > 0)
+                        {
+                            player.SetRect(0, 0);
+                            player.set_time_back(20);
+                            SDL_Delay(1000);
+                            player_power.SetLives(player.Get_lives_left());
+                            player_power.decrease();                           
+                            continue;
+                        }
+                        else
+                        {
+                            g_background.Free();
+                            player.Free();
+                            enemy_list.clear();
+                            mark_game.Free();
+                            time_game.Free();
+                            player_power.Free();
+                            player_money.Free();
+                            exp_enemy.Free();
+                            exp_main.Free();
+                            bool end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
+                            if (end)
+                            {
+                                player.Free();
+                                close();
+                                SDL_Quit();
+                                return 0;
+                            }
+                        }
 
                     }
-
-                    //time_die++;
-                    player.Lives_decre();
-                    if (player.Get_lives_left() > 0)
-                    {
-                        player.SetRect(0, 0);
-                        player.set_time_back(60);
-                        SDL_Delay(1000);
-                        player_power.SetLives(player.Get_lives_left());
-                        player_power.decrease();
-                       // player_power.Render(g_screen);
-                        continue;
-                    }
-                    else
+                    player_power.SetLives(player.Get_lives_left());
+                    player_power.decrease();
+                    if (player.Get_lives_left() <= 0)
                     {
                         g_background.Free();
                         player.Free();
@@ -342,7 +369,7 @@ int main(int argc, char* argv[])
                         player_money.Free();
                         exp_enemy.Free();
                         exp_main.Free();
-                        bool end = SDLCommonFuc::END(g_screen,menu_font,mar_val);
+                        bool end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
                         if (end)
                         {
                             player.Free();
@@ -351,158 +378,127 @@ int main(int argc, char* argv[])
                             return 0;
                         }
                     }
-                    
-                }
-                player_power.SetLives(player.Get_lives_left());
-                player_power.decrease();
-                //player_power.Render(g_screen);
-                if (player.Get_lives_left() <= 0)
-                {
-                    g_background.Free();
-                    player.Free();
-                    enemy_list.clear();
-                    mark_game.Free();
-                    time_game.Free();
-                    player_power.Free();
-                    player_money.Free();
-                    exp_enemy.Free();
-                    exp_main.Free();
-                    bool end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
-                    if (end)
-                    {
-                        player.Free();
-                        close();
-                        SDL_Quit();
-                        return 0;
-                    }
-                }
-               
 
+
+                }
             }
-        }
 
-        int frame_exp_width = exp_enemy.get_frame_width();
-        int frame_exp_height = exp_enemy.get_frame_height();
+            int frame_exp_width = exp_enemy.get_frame_width();
+            int frame_exp_height = exp_enemy.get_frame_height();
 
-        std::vector<Bullet*> bullet_arr = player.get_bullet_list();
-        for (int bl = 0; bl < bullet_arr.size(); bl++)
-        {
-            Bullet* p_bullet = bullet_arr.at(bl);
-            if (p_bullet != NULL)
+            std::vector<Bullet*> bullet_arr = player.get_bullet_list();
+            for (int bl = 0; bl < bullet_arr.size(); bl++)
             {
-                for (int t = 0; t < enemy_list.size(); t++)
+                Bullet* p_bullet = bullet_arr.at(bl);
+                if (p_bullet != NULL)
                 {
-                    Enemy* obj_enemy = enemy_list.at(t);
-                    if (obj_enemy != NULL)
+                    for (int t = 0; t < enemy_list.size(); t++)
                     {
-                        SDL_Rect tRect;
-
-                        tRect.x = obj_enemy->GetRect().x;
-                        tRect.y = obj_enemy->GetRect().y;
-                        tRect.w = obj_enemy->get_width_frame();
-                        tRect.h = obj_enemy->get_height_frame();
-
-                        SDL_Rect bRect;
-                        bRect = p_bullet->GetRect();
-
-                        bool bCol = SDLCommonFuc::checkColisision(bRect,tRect);
-
-                        if (bCol)
+                        Enemy* obj_enemy = enemy_list.at(t);
+                        if (obj_enemy != NULL)
                         {
-                            mar_val+=10;
-                            for (int ex = 0; ex < Num_EX_frame; ex++)
-                            {
-                                int x_pos = p_bullet->GetRect().x-frame_exp_width*0.5;
-                                int y_pos = p_bullet->GetRect().y - frame_exp_height * 0.5;
-                                exp_enemy.set_frame(ex);
-                                exp_enemy.SetRect(x_pos, y_pos);
-                                exp_enemy.show(g_screen);
+                            SDL_Rect tRect = obj_enemy->GetRectFrame();
+                            SDL_Rect bRect;
+                            bRect = p_bullet->GetRect();
 
+                            bool bCol = SDLCommonFuc::checkColisision(bRect, tRect);
+
+                            if (bCol)
+                            {
+                                mar_val += 10;
+                                for (int ex = 0; ex < Num_EX_frame; ex++)
+                                {
+                                    int x_pos = p_bullet->GetRect().x - frame_exp_width * 0.5;
+                                    int y_pos = p_bullet->GetRect().y - frame_exp_height * 0.5;
+                                    exp_enemy.set_frame(ex);
+                                    exp_enemy.SetRect(x_pos, y_pos);
+                                    exp_enemy.show(g_screen);
+
+                                }
+                                p_bullet->set_is_move(false);
+                                Mix_PlayChannel(-1, g_sound_exp[0], 0);
+                                obj_enemy->Free();
+                                enemy_list.erase(enemy_list.begin() + t);
                             }
 
-                            player.RemoveBullet(bl);
-                            Mix_PlayChannel(-1, g_sound_exp[0], 0);
-                            obj_enemy->Free();
-                            enemy_list.erase(enemy_list.begin() + t);
                         }
-
                     }
                 }
             }
-        }
 
-        //show game time
+            //show game time
 
-        std::string str_time = "Time: ";
-        Uint32 time_val_ = SDL_GetTicks() / 1000;
-        Uint32 val_time = 600 - time_val_;
+            std::string str_time = "Time: ";
+            Uint32 time_val_ = fps_times.TimePass(time_be_for_start);
+            Uint32 val_time = 600 - time_val_;
 
-        if (val_time <= 0)
-        {
-            g_background.Free();
-            player.Free();
-            enemy_list.clear();
-            mark_game.Free();
-            time_game.Free();
-            player_power.Free();
-            player_money.Free();
-            exp_enemy.Free();
-            exp_main.Free();
-            bool end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
-            if (end)
+            if (val_time <= 0)
             {
+                g_background.Free();
                 player.Free();
-                close();
-                SDL_Quit();
-                return 0;
+                enemy_list.clear();
+                mark_game.Free();
+                time_game.Free();
+                player_power.Free();
+                player_money.Free();
+                exp_enemy.Free();
+                exp_main.Free();
+                bool end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
+                if (end)
+                {
+                    player.Free();
+                    close();
+                    SDL_Quit();
+                    return 0;
+                }
             }
-        }
-        else
-        {
-            std::string str_val = std::to_string(val_time);
-            str_time += str_val;
-
-            time_game.SetText(str_time);
-            time_game.LoadFromRenderText(font_time, g_screen);
-            time_game.RenderText(g_screen, SCREEN_WIDTH - 200, 15);
-        }
-
-        std::string val_mark = std::to_string(mar_val);
-        std::string str_mark = "Mark: ";
-        str_mark += val_mark;
-        mark_game.SetText(str_mark);
-        mark_game.LoadFromRenderText(font_time, g_screen);
-        mark_game.RenderText(g_screen, SCREEN_WIDTH*0.5 - 100, 15);
-
-        int money_count = player.GetMoney();
-        std::string val_money = std::to_string(money_count);
-
-        mark_game.SetText(val_money);
-        mark_game.LoadFromRenderText(font_time, g_screen);
-        mark_game.RenderText(g_screen, 200, 15);
-
-        if (player.WIN() == true)
-        {
-            g_background.Free();
-            player.Free();
-            enemy_list.clear();
-            mark_game.Free();
-            time_game.Free();
-            player_power.Free();
-            player_money.Free();
-            exp_enemy.Free();
-            exp_main.Free();
-            bool win = SDLCommonFuc::IS_WIN(g_screen, menu_font, mar_val);
-            if (win)
+            else
             {
-                player.Free();
-                close();
-                SDL_Quit();
-                return 0;
-            }
-        }
+                std::string str_val = std::to_string(val_time);
+                str_time += str_val;
 
-        SDL_RenderPresent(g_screen);
+                time_game.SetText(str_time);
+                time_game.LoadFromRenderText(font_time, g_screen);
+                time_game.RenderText(g_screen, SCREEN_WIDTH - 200, 15);
+            }
+
+            std::string val_mark = std::to_string(mar_val);
+            std::string str_mark = "Mark: ";
+            str_mark += val_mark;
+            mark_game.SetText(str_mark);
+            mark_game.LoadFromRenderText(font_time, g_screen);
+            mark_game.RenderText(g_screen, SCREEN_WIDTH * 0.5 - 100, 15);
+
+            int money_count = player.GetMoney();
+            std::string val_money = std::to_string(money_count);
+
+            mark_game.SetText(val_money);
+            mark_game.LoadFromRenderText(font_time, g_screen);
+            mark_game.RenderText(g_screen, 200, 15);
+
+            if (player.WIN() == true)
+            {
+                g_background.Free();
+                player.Free();
+                enemy_list.clear();
+                mark_game.Free();
+                time_game.Free();
+                player_power.Free();
+                player_money.Free();
+                exp_enemy.Free();
+                exp_main.Free();
+                bool win = SDLCommonFuc::IS_WIN(g_screen, menu_font, mar_val);
+                if (win)
+                {
+                    player.Free();
+                    close();
+                    SDL_Quit();
+                    return 0;
+                }
+            }
+        
+            SDL_RenderPresent(g_screen);
+        }
         //delay
         int real_impTime = fps_times.get_tick();
         int time_one_frame = 1000 / FRAME_PER_SECOND;

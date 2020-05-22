@@ -80,5 +80,5 @@ void EXPLO::show(SDL_Renderer* screen)
 			rederquad.h = clipHT->h;
 		}
 
-		SDL_RenderCopy(screen, p_object_, clipHT, &rederquad);
+		SDL_RenderCopy(screen, p_object_, clipHT, &rederquad);//render 1 phan hinh anh cua p_obj theo vi tris da cho
 }

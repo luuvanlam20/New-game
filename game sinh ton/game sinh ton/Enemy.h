@@ -12,8 +12,28 @@
 class Enemy :public Hamcoso
 {
 public:
-	Enemy();
-	~Enemy();
+	Enemy()
+	{
+		width_pic = 0;
+		height_pic = 0;
+		x_pos_ = 0;
+		y_pos_ = 0;
+		x_val_ = 0;
+		y_val_ = 0;
+		on_ground = false;
+		frame_ = 0;
+
+		enemy_a = 0;
+		enemy_b = 0;
+		map_x = 0;
+		map_y = 0;
+		input_type.left = 0;
+		input_type.right = 0;
+		type_move = static_enemy;
+		isDead = false;
+		dan = 0;
+	}
+	~Enemy(){}
 
 	enum type_move
 	{
@@ -37,23 +57,19 @@ public:
 	int get_height_frame()const { return height_pic; }
 	void doEnemy(map& gMap);
 	void vacham(map& gMap);
-	void InitEnemy();
 	void set_type_move(const int& TYPE) { type_move = TYPE; }
-	void set_enemy_pos(const int& Ea, const int& Eb) { enemy_a = Ea; enemy_b = Eb; }
-	void set_input_left(const int& ipleft) { input_type.left = ipleft; }
-	void ImgMoveType(SDL_Renderer* screen);
+
+	void set_enemy_pos(const int& Ea, const int& Eb) { enemy_a = Ea; enemy_b = Eb; }//gioi han toa do quai di chuyen
+	void set_input_left(const int& ipleft) { input_type.left = ipleft; }//huong di
+	void ImgMoveType(SDL_Renderer* screen);//cap nhat hinh anh
 
 	SDL_Rect GetRectFrame();
 
-	std::vector<Bullet*> get_bullet_list()const { return bullet_list_; }
-	void set_bullet_list(const std::vector<Bullet*> bl_list) { bullet_list_ = bl_list; }
+	std::vector<Bullet*> get_bullet_list()const { return bullet_list_; }//lay dan
 	void InitBullet(Bullet* p_bullet, SDL_Renderer* screen);
 	void MakeBullet(SDL_Renderer* screen, const int& x_limit, const int& y_limit,map& map_data);
-	void RemoveBullet(const int& id);
 
-	//void setisdead(bool dead) { isDead = dead; }
 	bool GetisDead()const { return isDead; }
-
 private:
 	int map_x;
 	int map_y;
@@ -74,8 +90,10 @@ private:
 	input input_type;
 
 	std::vector<Bullet*> bullet_list_;
+	
 
 	bool isDead;
+	int dan;
 };
 
 

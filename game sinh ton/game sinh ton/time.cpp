@@ -29,7 +29,7 @@ void impTime::stop()
 	is_paused_ = false;
 	is_started_ = false;
 }
-
+//upgrade
 void impTime::pause(SDL_Event event)
 {
 	if (event.type == SDL_KEYDOWN)
@@ -71,6 +71,7 @@ void impTime::un_pausel(SDL_Event event)
 	}
 	
 }
+//upgrade
 int impTime::get_tick()
 {
 	if (is_started_ == true)
@@ -92,6 +93,7 @@ bool impTime::is_paused()
 {
 	return is_paused_;
 }
+//upgrade
 int impTime::TimePass(const int & time_be_for_start)
 {	
 	int TIMEPASS = 0;
@@ -99,3 +101,4 @@ int impTime::TimePass(const int & time_be_for_start)
 	return TIMEPASS/1000;
 
 }
+//upgrade

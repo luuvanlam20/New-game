@@ -148,7 +148,7 @@ int SDLCommonFuc::ShowMenu(SDL_Renderer* screen, TTF_Font* font)
     
     return 2;
 }
-
+//upgrade
 int SDLCommonFuc::doHelp(SDL_Renderer* screen, TTF_Font* font)
 {
     Hamcoso g_help;
@@ -488,6 +488,7 @@ bool SDLCommonFuc::IS_WIN(SDL_Renderer* screen, TTF_Font* font, const UINT& mar)
 
     return true;
 }
+//upgrade
 //muon tu wed phattrienphanmem123az
 bool SDLCommonFuc::checkColisision(const SDL_Rect& obj1, const SDL_Rect& obj2)
 {

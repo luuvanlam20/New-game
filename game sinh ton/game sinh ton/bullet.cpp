@@ -126,7 +126,7 @@ void Bullet::hand_Move(const int& x_bor,const int & y_bor,map& map_data, const i
 
 	}
 }
-
+//upgrade
 void Bullet::vacham( map& map_data,const int& map_x,const int& map_y)
 {
 	int x1 = 0;
@@ -230,3 +230,4 @@ void Bullet::vacham( map& map_data,const int& map_x,const int& map_y)
 
 	
 }
+//upgrade

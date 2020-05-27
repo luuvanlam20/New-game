@@ -147,6 +147,7 @@ int main(int argc, char* argv[])
     int ret_menu = SDLCommonFuc::ShowMenu(g_screen, menu_font);
 
     bool is_quit = false;
+    // upgrade
     while (ret_menu == 1)
     {
         if (ret_menu == 1)
@@ -155,7 +156,7 @@ int main(int argc, char* argv[])
 
         }
     }
-    
+    //upgrade
 
     if (ret_menu == 2)
     {
@@ -211,9 +212,9 @@ int main(int argc, char* argv[])
 
     TextObject money_game;
     money_game.SetColor(TextObject::WHITE_TEXT);
-
+    //upgrade
     int time_be_for_start = SDL_GetTicks();
-
+    //upgrade
     while (!is_quit)
     {
         if (ret_menu == 0 && fps_times.is_paused() == false)
@@ -228,8 +229,10 @@ int main(int argc, char* argv[])
             {
                 is_quit = true;
             }
+            //upgrade
             fps_times.un_pausel(g_event);
             fps_times.pause(g_event);
+            //upgrade
             player.HandInputAction(g_event, g_screen, g_sound_bullet);
         }
         SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
@@ -272,12 +275,14 @@ int main(int argc, char* argv[])
             {
                 Enemy* p_enemy = enemy_list.at(i);
                 if (p_enemy != NULL)
-                {                 
+                {           
+                    //upgrade
                     if (p_enemy->GetisDead())
                     {
                         p_enemy->Free();
                         enemy_list.erase(enemy_list.begin() + i);
                     }
+                    //upgrade
                     p_enemy->SetMapXY(map_data.stratX, map_data.stratY);
                     p_enemy->ImgMoveType(g_screen);
                     p_enemy->doEnemy(map_data);
@@ -323,14 +328,17 @@ int main(int argc, char* argv[])
                             SDL_RenderPresent(g_screen);
 
                         }
-
+                        //upgrade
                         player.Lives_decre();
+                        //upgrade
                         if (player.Get_lives_left() > 0)
                         {
                             player.SetRect(0, 0);
                             player.set_time_back(20);
                             SDL_Delay(1000);
+                            //upgrade
                             player_power.SetLives(player.Get_lives_left());
+                            //upgrade
                             player_power.decrease();                           
                             continue;
                         }
@@ -345,6 +353,7 @@ int main(int argc, char* argv[])
                             player_money.Free();
                             exp_enemy.Free();
                             exp_main.Free();
+                            //upgrade
                             bool end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
                             if (end)
                             {
@@ -353,11 +362,15 @@ int main(int argc, char* argv[])
                                 SDL_Quit();
                                 return 0;
                             }
+                            //upgrade
                         }
 
                     }
+                    //upgrade
                     player_power.SetLives(player.Get_lives_left());
+                    //upgrade
                     player_power.decrease();
+                    
                     if (player.Get_lives_left() <= 0)
                     {
                         g_background.Free();
@@ -369,6 +382,7 @@ int main(int argc, char* argv[])
                         player_money.Free();
                         exp_enemy.Free();
                         exp_main.Free();
+                        //upgrade
                         bool end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
                         if (end)
                         {
@@ -377,6 +391,7 @@ int main(int argc, char* argv[])
                             SDL_Quit();
                             return 0;
                         }
+                        //upgrade
                     }
 
 
@@ -415,7 +430,7 @@ int main(int argc, char* argv[])
                                     exp_enemy.show(g_screen);
 
                                 }
-                                p_bullet->set_is_move(false);
+                                p_bullet->set_is_move(false);//em da xoa ham ko can thiet
                                 Mix_PlayChannel(-1, g_sound_exp[0], 0);
                                 obj_enemy->Free();
                                 enemy_list.erase(enemy_list.begin() + t);
@@ -443,6 +458,7 @@ int main(int argc, char* argv[])
                 player_money.Free();
                 exp_enemy.Free();
                 exp_main.Free();
+                //upgrade
                 bool end = SDLCommonFuc::END(g_screen, menu_font, mar_val);
                 if (end)
                 {
@@ -451,6 +467,7 @@ int main(int argc, char* argv[])
                     SDL_Quit();
                     return 0;
                 }
+                //upgrade
             }
             else
             {
@@ -475,7 +492,7 @@ int main(int argc, char* argv[])
             mark_game.SetText(val_money);
             mark_game.LoadFromRenderText(font_time, g_screen);
             mark_game.RenderText(g_screen, 200, 15);
-
+            //upgrade
             if (player.WIN() == true)
             {
                 g_background.Free();
@@ -496,7 +513,7 @@ int main(int argc, char* argv[])
                     return 0;
                 }
             }
-        
+            //upgrade
             SDL_RenderPresent(g_screen);
         }
         //delay

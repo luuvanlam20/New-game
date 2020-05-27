@@ -127,6 +127,7 @@ void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* b
 			input_type.down = 1;
 		}
 		break;
+		//upgrade
 		case(SDLK_1):
 		{
 			
@@ -146,6 +147,7 @@ void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* b
 			
 		}
 		break;
+		//upgrade
 		}
 	}
 	else if (event.type == SDL_KEYUP)
@@ -182,6 +184,7 @@ void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* b
 	{
 		if (event.button.button == SDL_BUTTON_LEFT)
 		{
+			//upgrade
 			Bullet* p_bullet = new Bullet();
 			if (bullet_type == 1) 
 			{
@@ -261,7 +264,7 @@ void NVchinh::HandInputAction(SDL_Event event, SDL_Renderer* screen,Mix_Chunk* b
 				}
 			}
 
-			
+			//upgrade
 
 			p_bullet->set_x_val(30);
 			p_bullet->set_y_val(30);
@@ -407,8 +410,10 @@ void NVchinh::vacham(map& map_data)
 					x_pos -= (width_pic + 1);
 					x_val = 0;
 				}
+				//upgrade
 				else if (map_data.tile[y1][x2] == chotrong && map_data.tile[y2][x2] == chotrong)
 					on_groud = false;
+				//upgrade
 			}
 		}
 		
@@ -429,8 +434,10 @@ void NVchinh::vacham(map& map_data)
 					x_pos = (x1 + 1) * TILE_SIZE;
 					x_val = 0;
 				}
+				//upgrade
 				else if (map_data.tile[y1][x1] == chotrong && map_data.tile[y2][x1] == chotrong)
 					on_groud = false;
+				//upgrade
 			}
 			
 		}

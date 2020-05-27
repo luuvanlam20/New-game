@@ -140,10 +140,12 @@ void Enemy::vacham(map& gMap)
 				x_pos_ = x2 * TILE_SIZE;
 				x_pos_ -= (width_pic + 1);
 				x_val_ = 0;
+				//upgrade
 				enemy_b = x_pos_-10;
 				enemy_a = x_pos_ - 150;
 				input_type.left = 1;
 				input_type.right = 0;
+				//upgrade
 			}
 		}
 
@@ -156,10 +158,12 @@ void Enemy::vacham(map& gMap)
 			{
 				x_pos_ = (x1 + 1) * TILE_SIZE;
 				x_val_ = 0;
+				//upgrade
 				enemy_a = x_pos_+10;
 				enemy_b = x_pos_ + 150;
 				input_type.left = 0;
 				input_type.right = 1;
+				//upgrade
 			}
 		}
 	}
@@ -231,6 +235,7 @@ void Enemy::ImgMoveType(SDL_Renderer* screen)
 				input_type.left = 1;				
 				input_type.right = 0;
 				LoadImg("hinh//threat_left.png", screen);
+				//upgrade
 				if(dan==0)
 				{
 					
@@ -248,7 +253,7 @@ void Enemy::ImgMoveType(SDL_Renderer* screen)
 					
 					dan = 1;
 				}
-				
+				//upgrade
 				
 
 			}
@@ -260,6 +265,7 @@ void Enemy::ImgMoveType(SDL_Renderer* screen)
 					input_type.right = 1;
 					
 					LoadImg("hinh//threat_right.png", screen);
+					//upgrade
 					if (dan==1)
 					{
 						
@@ -276,7 +282,7 @@ void Enemy::ImgMoveType(SDL_Renderer* screen)
 						}						
 						dan = 2;
 					}
-					
+					//upgrade
 				}
 			}
 		}
